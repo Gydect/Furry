@@ -18,13 +18,14 @@
         <Element name="furry_marshmallow.tex" u1="0.375488" u2="0.499512" v1="0.250977" v2="0.499023" />
         <Element name="furry_nut_energy_bar.tex" u1="0.375488" u2="0.499512" v1="0.000976563" v2="0.249023" />
         <Element name="furry_nutrition_cup.tex" u1="0.500488" u2="0.624512" v1="0.750977" v2="0.999023" />
-        <Element name="furry_pomegranate_velvet.tex" u1="0.500488" u2="0.624512" v1="0.500977" v2="0.749023" />
-        <Element name="furry_semi_cheese.tex" u1="0.500488" u2="0.624512" v1="0.250977" v2="0.499023" />
-        <Element name="furry_spicy_stew.tex" u1="0.500488" u2="0.624512" v1="0.000976563" v2="0.249023" />
-        <Element name="furry_sweet_vegetable_soup.tex" u1="0.625488" u2="0.749512" v1="0.750977" v2="0.999023" />
-        <Element name="furry_tiramisu.tex" u1="0.750488" u2="0.874512" v1="0.750977" v2="0.999023" />
-        <Element name="furry_turkey_feast.tex" u1="0.875488" u2="0.999512" v1="0.750977" v2="0.999023" />
-        <Element name="furry_vanilla_cone.tex" u1="0.625488" u2="0.749512" v1="0.500977" v2="0.749023" />
+        <Element name="furry_perilla_wraps.tex" u1="0.500488" u2="0.624512" v1="0.500977" v2="0.749023" />
+        <Element name="furry_pomegranate_velvet.tex" u1="0.500488" u2="0.624512" v1="0.250977" v2="0.499023" />
+        <Element name="furry_semi_cheese.tex" u1="0.500488" u2="0.624512" v1="0.000976563" v2="0.249023" />
+        <Element name="furry_spicy_stew.tex" u1="0.625488" u2="0.749512" v1="0.750977" v2="0.999023" />
+        <Element name="furry_sweet_vegetable_soup.tex" u1="0.750488" u2="0.874512" v1="0.750977" v2="0.999023" />
+        <Element name="furry_tiramisu.tex" u1="0.875488" u2="0.999512" v1="0.750977" v2="0.999023" />
+        <Element name="furry_turkey_feast.tex" u1="0.625488" u2="0.749512" v1="0.500977" v2="0.749023" />
+        <Element name="furry_vanilla_cone.tex" u1="0.625488" u2="0.749512" v1="0.250977" v2="0.499023" />
     </Elements>
     <StraightAlpha>false</StraightAlpha>
 </Atlas>

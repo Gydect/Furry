@@ -1,30 +1,33 @@
 <Atlas>
-    <Texture filename="furry_inventoryimages.tex"/>
+    <Texture filename="furry_inventoryimages.tex" />
     <Elements>
-        <Element name="furry_creamy_clam_egg_stew.tex" u1="0" u2="0.125" v1="0.875" v2="1"/>
-        <Element name="furry_creamy_fruit_pie.tex" u1="0.125" u2="0.25" v1="0.875" v2="1"/>
-        <Element name="furry_crispy_butterfly_pie.tex" u1="0.25" u2="0.375" v1="0.875" v2="1"/>
-        <Element name="furry_curry_omelet_rice.tex" u1="0.375" u2="0.5" v1="0.875" v2="1"/>
-        <Element name="furry_durian_mille_feuille.tex" u1="0.5" u2="0.625" v1="0.875" v2="1"/>
-        <Element name="furry_fishball_scallion_noodles.tex" u1="0.625" u2="0.75" v1="0.875" v2="1"/>
-        <Element name="furry_french_boston_lobster.tex" u1="0.75" u2="0.875" v1="0.875" v2="1"/>
-        <Element name="furry_garlic_bullfrog.tex" u1="0.875" u2="1" v1="0.875" v2="1"/>
-        <Element name="furry_herbal_tea.tex" u1="0" u2="0.125" v1="0.75" v2="0.875"/>
-        <Element name="furry_jasmine_milk_tea.tex" u1="0.125" u2="0.25" v1="0.75" v2="0.875"/>
-        <Element name="furry_marshmallow.tex" u1="0.25" u2="0.375" v1="0.75" v2="0.875"/>
-        <Element name="furry_nut_energy_bar.tex" u1="0.375" u2="0.5" v1="0.75" v2="0.875"/>
-        <Element name="furry_nutrition_cup.tex" u1="0.5" u2="0.625" v1="0.75" v2="0.875"/>
-        <Element name="furry_pomegranate_velvet.tex" u1="0.625" u2="0.75" v1="0.75" v2="0.875"/>
-        <Element name="furry_semi_cheese.tex" u1="0.75" u2="0.875" v1="0.75" v2="0.875"/>
-        <Element name="furry_spicy_stew.tex" u1="0.875" u2="1" v1="0.75" v2="0.875"/>
-        <Element name="furry_sweet_vegetable_soup.tex" u1="0" u2="0.125" v1="0.625" v2="0.75"/>
-        <Element name="furry_tiramisu.tex" u1="0.125" u2="0.25" v1="0.625" v2="0.75"/>
-        <Element name="furry_turkey_feast.tex" u1="0.25" u2="0.375" v1="0.625" v2="0.75"/>
-        <Element name="furry_vanilla_cone.tex" u1="0.375" u2="0.5" v1="0.625" v2="0.75"/>
-        <Element name="furry_wolf_milk.tex" u1="0.5" u2="0.625" v1="0.625" v2="0.75"/>
-        <Element name="furry_banana_milk_pudding.tex" u1="0.625" u2="0.75" v1="0.625" v2="0.75"/>
-        <Element name="furry_butter.tex" u1="0.75" u2="0.875" v1="0.625" v2="0.75"/>
-        <Element name="furry_cheese_potato_bake.tex" u1="0.875" u2="1" v1="0.625" v2="0.75"/>
-        <Element name="furry_cola_chicken_wings.tex" u1="0" u2="0.125" v1="0.5" v2="0.625"/>
+        <Element name="furry_banana_milk_pudding.tex" u1="0.000976563" u2="0.124023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_butter.tex" u1="0.000976563" u2="0.124023" v1="0.501953" v2="0.748047" />
+        <Element name="furry_cheese_potato_bake.tex" u1="0.000976563" u2="0.124023" v1="0.251953" v2="0.498047" />
+        <Element name="furry_cola_chicken_wings.tex" u1="0.000976563" u2="0.124023" v1="0.00195313" v2="0.248047" />
+        <Element name="furry_collar_bell.tex" u1="0.125977" u2="0.249023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_creamy_clam_egg_stew.tex" u1="0.125977" u2="0.249023" v1="0.501953" v2="0.748047" />
+        <Element name="furry_creamy_fruit_pie.tex" u1="0.125977" u2="0.249023" v1="0.251953" v2="0.498047" />
+        <Element name="furry_crispy_butterfly_pie.tex" u1="0.125977" u2="0.249023" v1="0.00195313" v2="0.248047" />
+        <Element name="furry_curry_omelet_rice.tex" u1="0.250977" u2="0.374023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_durian_mille_feuille.tex" u1="0.250977" u2="0.374023" v1="0.501953" v2="0.748047" />
+        <Element name="furry_fishball_scallion_noodles.tex" u1="0.250977" u2="0.374023" v1="0.251953" v2="0.498047" />
+        <Element name="furry_french_boston_lobster.tex" u1="0.250977" u2="0.374023" v1="0.00195313" v2="0.248047" />
+        <Element name="furry_garlic_bullfrog.tex" u1="0.375977" u2="0.499023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_herbal_tea.tex" u1="0.375977" u2="0.499023" v1="0.501953" v2="0.748047" />
+        <Element name="furry_jasmine_milk_tea.tex" u1="0.375977" u2="0.499023" v1="0.251953" v2="0.498047" />
+        <Element name="furry_marshmallow.tex" u1="0.375977" u2="0.499023" v1="0.00195313" v2="0.248047" />
+        <Element name="furry_nut_energy_bar.tex" u1="0.500977" u2="0.624023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_nutrition_cup.tex" u1="0.500977" u2="0.624023" v1="0.501953" v2="0.748047" />
+        <Element name="furry_perilla_wraps.tex" u1="0.500977" u2="0.624023" v1="0.251953" v2="0.498047" />
+        <Element name="furry_pomegranate_velvet.tex" u1="0.500977" u2="0.624023" v1="0.00195313" v2="0.248047" />
+        <Element name="furry_semi_cheese.tex" u1="0.625977" u2="0.749023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_spicy_stew.tex" u1="0.750977" u2="0.874023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_sweet_vegetable_soup.tex" u1="0.875977" u2="0.999023" v1="0.751953" v2="0.998047" />
+        <Element name="furry_tiramisu.tex" u1="0.625977" u2="0.749023" v1="0.501953" v2="0.748047" />
+        <Element name="furry_turkey_feast.tex" u1="0.625977" u2="0.749023" v1="0.251953" v2="0.498047" />
+        <Element name="furry_vanilla_cone.tex" u1="0.625977" u2="0.749023" v1="0.00195313" v2="0.248047" />
+        <Element name="furry_wolf_milk.tex" u1="0.750977" u2="0.874023" v1="0.501953" v2="0.748047" />
     </Elements>
+    <StraightAlpha>false</StraightAlpha>
 </Atlas>

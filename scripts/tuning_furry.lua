@@ -74,7 +74,7 @@ TUNING_FURRY = {
         FOODTYPE = FOODTYPE.GENERIC,
     },
     -- 紫苏包肉
-    ZISUBAOROU = {
+    PERILLA_WRAPS = {
         HEALTH = 15,
         HUNGER = 37.5,
         SANITY = 5,

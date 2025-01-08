@@ -4,24 +4,24 @@
     ]]
 local foods =
 {
-    --紫苏包肉
-    furry_zishubaorou = {
+    -- 紫苏包肉
+    furry_perilla_wraps = {
         test = function(cooker, names, tags)
             return names.foliage and names.furry_wolf_milk and tags.meat and tags.veggie
         end,
         priority = 20,
         weight = 1,
-        foodtype = TUNING_FURRY.ZISUBAOROU.FOODTYPE,
-        health = TUNING_FURRY.ZISUBAOROU.HEALTH,
-        hunger = TUNING_FURRY.ZISUBAOROU.HUNGER,
-        sanity = TUNING_FURRY.ZISUBAOROU.SANITY,
-        perishtime = TUNING_FURRY.ZISUBAOROU.PERISH,
-        cooktime = TUNING_FURRY.ZISUBAOROU.COOKTIME,
+        foodtype = TUNING_FURRY.PERILLA_WRAPS.FOODTYPE,
+        health = TUNING_FURRY.PERILLA_WRAPS.HEALTH,
+        hunger = TUNING_FURRY.PERILLA_WRAPS.HUNGER,
+        sanity = TUNING_FURRY.PERILLA_WRAPS.SANITY,
+        perishtime = TUNING_FURRY.PERILLA_WRAPS.PERISH,
+        cooktime = TUNING_FURRY.PERILLA_WRAPS.COOKTIME,
         floater = { "med", nil, 0.55 },
         card_def = { ingredients = { { "foliage", 1 }, { "furry_wolf_milk", 1 }, { "meat", 1 }, { "veggie", 1 } } },
         oneatenfn = function(inst, eater)
             if eater and eater.prefab == "wilson" then
-                eater:AddDebuff("buff_furryzishubaorou", "buff_furryzishubaorou")
+                eater:AddDebuff("buff_furry_perilla_wraps", "buff_furry_perilla_wraps")
             end
         end
     },
@@ -32,16 +32,16 @@ local foods =
         test = function(cooker, names, tags)
             return tags.meat and tags.meat >= 1 and (names.potato or names.potato_cooked) and names.furry_wolf_milk and tags.egg and tags.egg >= 1
         end,
-        priority = 20,                                                                                                -- 优先级
-        weight = 1,                                                                                                   -- 权重
-        foodtype = TUNING_FURRY.CURRY_OMELET_RICE.FOODTYPE,                                                           -- 蔬菜:VEGGIE 肉:MEAT 好东西:GOODIES
-        health = TUNING_FURRY.CURRY_OMELET_RICE.HEALTH,                                                               -- 生命值
-        hunger = TUNING_FURRY.CURRY_OMELET_RICE.HUNGER,                                                               -- 饥饿
-        perishtime = TUNING_FURRY.CURRY_OMELET_RICE.PERISH,                                                           -- 腐烂时间
-        sanity = TUNING_FURRY.CURRY_OMELET_RICE.SANITY,                                                               -- 精神
-        cooktime = TUNING_FURRY.CURRY_OMELET_RICE.COOKTIME,                                                           -- 烹饪时间:1对应20s
-        floater = { "med", nil, 0.55 },                                                                               -- 漂浮在水面的参数
-        card_def = { ingredients = { { "potato", 1 }, { "meat", 1 }, { "bird_egg", 1 }, { "furry_wolf_milk", 1 } } }, -- 食谱卡
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.CURRY_OMELET_RICE.FOODTYPE,
+        health = TUNING_FURRY.CURRY_OMELET_RICE.HEALTH,
+        hunger = TUNING_FURRY.CURRY_OMELET_RICE.HUNGER,
+        perishtime = TUNING_FURRY.CURRY_OMELET_RICE.PERISH,
+        sanity = TUNING_FURRY.CURRY_OMELET_RICE.SANITY,
+        cooktime = TUNING_FURRY.CURRY_OMELET_RICE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "potato", 1 }, { "meat", 1 }, { "bird_egg", 1 }, { "furry_wolf_milk", 1 } } },
     },
     -- 鱼丸葱面
     furry_fishball_scallion_noodles =

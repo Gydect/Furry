@@ -75,3 +75,21 @@ if _G.FURRY_SETS.ENABLEDMODS["legion"] then
     AddPrefabPostInit("chest_whitewood_big", HookWhitewood)
     AddPrefabPostInit("chest_whitewood_big_inf", HookWhitewood)
 end
+
+--[[ 给部分物品添加可以交易的组件，使其可以给予铃铛 ]]
+local function AddTradableToPrefab(prefab_name)
+    AddPrefabPostInit(prefab_name, function(inst)
+        if not TheWorld.ismastersim then
+            return
+        end
+
+        if inst.components.tradable == nil then
+            inst:AddComponent("tradable")
+        end
+    end)
+end
+-- 添加 Tradable 组件到目标物品
+local target_items = { "eyebrellahat", "cane", "trunkvest_winter", "pigskin" }
+for _, prefab_name in ipairs(target_items) do
+    AddTradableToPrefab(prefab_name)
+end
