@@ -78,161 +78,161 @@ TUNING_FURRY = {
         HEALTH = 15,
         HUNGER = 37.5,
         SANITY = 5,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 15 * cook_time,
+        FOODTYPE = FOODTYPE.MEAT,
     },
     -- 冒菜炖肉
-    MAOCAIDUNROU = {
+    SPICY_STEW = {
         HEALTH = 5,
         HUNGER = 75,
         SANITY = -15,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 15 * cook_time,
+        FOODTYPE = FOODTYPE.MEAT,
     },
     -- 芝士土豆焗奶
-    ZHISHITUDOUJUNAI = {
+    CHEESE_POTATO_BAKE = {
         HEALTH = 5,
         HUNGER = 62.5,
         SANITY = 5,
         PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 香蕉冻奶布丁
-    XIANGJIAODONGNAIBUDING = {
+    BANANA_MILK_PUDDING = {
         HEALTH = 10,
         HUNGER = 12.5,
         SANITY = 33,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 10 * total_day_time,
+        COOKTIME = 10 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 酥麻蝴蝶派
-    SUMAHUDIEPAI = {
+    CRISPY_BUTTERFLY_PIE = {
         HEALTH = 30,
         HUNGER = 12.5,
         SANITY = 10,
         PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        COOKTIME = 30 * cook_time,
+        FOODTYPE = FOODTYPE.GOODIES,
     },
     -- 提神花草茶
-    TISHENHUACAOCHA = {
+    HERBAL_TEA = {
         HEALTH = 10,
         HUNGER = 12.5,
         SANITY = 50,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 45 * cook_time,
+        FOODTYPE = FOODTYPE.GOODIES,
     },
     -- 可乐鸡翅
-    KELEJICHI = {
+    COLA_CHICKEN_WINGS = {
         HEALTH = 20,
         HUNGER = 75,
         SANITY = 5,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 15 * cook_time,
+        FOODTYPE = FOODTYPE.MEAT,
     },
     -- 奶油水果派
-    NAIYOUSHUIGUOPAI = {
+    CREAMY_FRUIT_PIE = {
         HEALTH = 60,
         HUNGER = 150,
         SANITY = 15,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 10 * total_day_time,
+        COOKTIME = 30 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 法式波士顿龙虾
-    FASHIBOSHIDUNLONGXIA = {
+    FRENCH_BOSTON_LOBSTER = {
         HEALTH = 60,
         HUNGER = 75,
         SANITY = 15,
-        PERISH = 20 * total_day_time,
+        PERISH = 15 * total_day_time,
         COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        FOODTYPE = FOODTYPE.MEAT,
     },
     -- 火鸡盛宴
-    HUOJISHENGYAN = {
+    TURKEY_FEAST = {
         HEALTH = 25,
         HUNGER = 75,
         SANITY = 5,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 30 * cook_time,
+        FOODTYPE = FOODTYPE.MEAT,
     },
     -- 香草甜筒
-    XIANGCAOTIANTONG = {
+    VANILLA_CONE = {
         HEALTH = 40,
         HUNGER = 12.5,
         SANITY = 33,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 5 * total_day_time,
+        COOKTIME = 10 * cook_time,
+        FOODTYPE = FOODTYPE.GOODIES,
     },
     -- 甜腻蔬菜汤
-    TIANNINGSHUCAITANG = {
+    SWEET_VEGETABLE_SOUP = {
         HEALTH = 10,
         HUNGER = 37.5,
         SANITY = 5,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 奶油蛤蜊炖蛋
-    NAIYOUHALIDUNDAN = {
+    CREAMY_CLAM_EGG_STEW = {
         HEALTH = 20,
         HUNGER = 37.5,
         SANITY = 15,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.MEAT,
     },
-    -- 螺丝粉
-    LUOSIFEN = {
+    -- 红石榴丝绒千层
+    POMEGRANATE_VELVET = {
         HEALTH = 20,
         HUNGER = 75,
         SANITY = 5,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 10 * total_day_time,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 营养杯
-    YINGYANGBEI = {
+    NUTRITION_CUP = {
         HEALTH = 0,
         HUNGER = 0,
         SANITY = 0,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = nil,
+        COOKTIME = 30 * cook_time,
+        FOODTYPE = FOODTYPE.GOODIES,
     },
     -- 榴莲酱千层
-    LIULIANJIANGQIANCENG = {
+    DURIAN_MILLE_FEUILLE = {
         HEALTH = 40,
         HUNGER = 12.5,
         SANITY = -15,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 8 * total_day_time,
+        COOKTIME = 25 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 坚果能量棒
-    JIANGUONENGLIANGBANG = {
+    NUT_ENERGY_BAR = {
         HEALTH = 15,
         HUNGER = 37.5,
         SANITY = 10,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 60 * total_day_time,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.VEGGIE,
     },
     -- 棉花糖
-    MIANHUATANG = {
+    MARSHMALLOW = {
         HEALTH = -3,
         HUNGER = 25,
         SANITY = 33,
-        PERISH = 20 * total_day_time,
-        COOKTIME = 60 * cook_time,
-        FOODTYPE = FOODTYPE.GENERIC,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.GOODIES,
     },
 }
