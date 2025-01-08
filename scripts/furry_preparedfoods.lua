@@ -74,6 +74,59 @@ local foods =
         floater = { "med", nil, 0.55 },
         card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "butter", 1 }, { "bird_egg", 2 } } },
     },
+    -- 提拉米苏
+    furry_tiramisu =
+    {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk and tags.sweetener and tags.sweetener >= 3
+                and tags.fat and tags.fat >= 1 and tags.egg and tags.egg >= 1
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.TIRAMISU.FOODTYPE,
+        health = TUNING_FURRY.TIRAMISU.HEALTH,
+        hunger = TUNING_FURRY.TIRAMISU.HUNGER,
+        perishtime = TUNING_FURRY.TIRAMISU.PERISH,
+        sanity = TUNING_FURRY.TIRAMISU.SANITY,
+        cooktime = TUNING_FURRY.TIRAMISU.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "royal_jelly", 1 }, { "butter", 1 }, { "bird_egg", 1 } } },
+    },
+    -- 蒜香牛蛙
+    furry_garlic_bullfrog =
+    {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk and (names.garlic or names.garlic_cooked)
+                and (names.froglegs == 2 or names.froglegs_cooked == 2 or (names.froglegs and names.froglegs_cooked))
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.GARLIC_BULLFROG.FOODTYPE,
+        health = TUNING_FURRY.GARLIC_BULLFROG.HEALTH,
+        hunger = TUNING_FURRY.GARLIC_BULLFROG.HUNGER,
+        perishtime = TUNING_FURRY.GARLIC_BULLFROG.PERISH,
+        sanity = TUNING_FURRY.GARLIC_BULLFROG.SANITY,
+        cooktime = TUNING_FURRY.GARLIC_BULLFROG.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "froglegs", 2 }, { "garlic", 1 }, { "furry_wolf_milk", 1 } } },
+    },
+    -- 劣质黄油
+    furry_butter =
+    {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk == 4
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.BUTTER.FOODTYPE,
+        health = TUNING_FURRY.BUTTER.HEALTH,
+        hunger = TUNING_FURRY.BUTTER.HUNGER,
+        perishtime = TUNING_FURRY.BUTTER.PERISH,
+        sanity = TUNING_FURRY.BUTTER.SANITY,
+        cooktime = TUNING_FURRY.BUTTER.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 4 } } },
+    },
 }
 
 for k, v in pairs(foods) do
@@ -82,7 +135,9 @@ for k, v in pairs(foods) do
     v.priority = v.priority or 0
 
     v.cookbook_category = "mod"
-    v.overridebuild = "furry_foods"
+    if v.overridebuild == nil then
+        v.overridebuild = "furry_foods"
+    end
 
     -- 烹饪指南里的料理贴图
     v.cookbook_atlas = "images/furry_cookbookimages.xml"

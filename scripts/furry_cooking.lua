@@ -19,5 +19,6 @@ for k, recipe in pairs(spicedfoods) do
     end
 end
 
-AddIngredientValues({ "foliage" }, { inedible = 1 })      -- 蕨叶可以入锅
-AddIngredientValues({ "furry_wolf_milk" }, { dairy = 1 }) -- 狼奶
+AddIngredientValues({ "foliage" }, { inedible = 1 })            -- 蕨叶可以入锅
+AddIngredientValues({ "furry_wolf_milk" }, { dairy = 1 })       -- 狼奶
+AddIngredientValues({ "furry_butter" }, { fat = 1, dairy = 1 }) -- 劣质黄油

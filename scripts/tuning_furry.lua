@@ -46,4 +46,31 @@ TUNING_FURRY = {
         COOKTIME = 20 * cook_time,
         FOODTYPE = FOODTYPE.GOODIES,
     },
+    -- 提拉米苏
+    TIRAMISU = {
+        HEALTH = 60,
+        HUNGER = 62.5,
+        SANITY = 33,
+        PERISH = 20 * total_day_time,
+        COOKTIME = 20 * cook_time,
+        FOODTYPE = FOODTYPE.GOODIES,
+    },
+    -- 蒜香牛蛙
+    GARLIC_BULLFROG = {
+        HEALTH = 35,
+        HUNGER = 62.5,
+        SANITY = 15,
+        PERISH = 15 * total_day_time,
+        COOKTIME = 15 * cook_time,
+        FOODTYPE = FOODTYPE.MEAT,
+    },
+    -- 劣质黄油
+    BUTTER = {
+        HEALTH = 20,
+        HUNGER = 12.5,
+        SANITY = 0,
+        PERISH = 20 * total_day_time,
+        COOKTIME = 60 * cook_time,
+        FOODTYPE = FOODTYPE.GENERIC,
+    },
 }
