@@ -5,14 +5,16 @@ local _G = GLOBAL
 -- ※标注的地方大概率在新增内容的时候需要添加对应的参数,请仔细核对※标注的部分
 
 -- 获取mod配置,放到官方的全局变量tuning表中
-TUNING.FURRY_LANGUAGE = GetModConfigData("languages") --获取配置:语言
+TUNING.FURRY_LANGUAGE = GetModConfigData("languages") -- 获取配置:语言
 
-require("tuning_furry") -- mod全局表
+require("tuning_furry")                               -- mod全局表
 
 -- ※万物皆是prefab
 PrefabFiles = {
-    "furry_preparedfoods", -- mod料理
-    "furry_wolf_milk",     -- 狼奶
+    "furry_preparedfoods",         -- mod料理
+    "furry_wolf_milk",             -- 狼奶
+    "buff_furry_tiramisu",         -- 提拉米苏buff(临时)
+    "buff_furry_jasmine_milk_tea", -- 茉莉奶绿buff(临时)
 }
 
 Assets = {

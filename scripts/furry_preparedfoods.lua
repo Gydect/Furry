@@ -54,6 +54,11 @@ local foods =
         sanity = TUNING_FURRY.JASMINE_MILK_TEA.SANITY,
         cooktime = TUNING_FURRY.JASMINE_MILK_TEA.COOKTIME,
         floater = { "med", nil, 0.55 },
+        oneatenfn = function(inst, eater)
+            if eater.components.debuffable ~= nil then
+                eater:AddDebuff("buff_furry_jasmine_milk_tea", "buff_furry_jasmine_milk_tea")
+            end
+        end,
         card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "honey", 1 }, { "ice", 1 }, { "foliage", 1 } } },
         potlevel = "low",
     },
@@ -90,6 +95,11 @@ local foods =
         sanity = TUNING_FURRY.TIRAMISU.SANITY,
         cooktime = TUNING_FURRY.TIRAMISU.COOKTIME,
         floater = { "med", nil, 0.55 },
+        oneatenfn = function(inst, eater)
+            if eater.components.debuffable ~= nil then
+                eater:AddDebuff("buff_furry_tiramisu", "buff_furry_tiramisu")
+            end
+        end,
         card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "royal_jelly", 1 }, { "butter", 1 }, { "bird_egg", 1 } } },
     },
     -- 蒜香牛蛙
