@@ -9,53 +9,70 @@ local foods =
     {
         -- 配方
         test = function(cooker, names, tags)
-            return tags.meat and tags.meat >= 1 and (names.potato or names.potato_cooked) and tags.dairy and tags.dairy >= 1 and tags.egg and tags.egg >= 1
+            return tags.meat and tags.meat >= 1 and (names.potato or names.potato_cooked) and names.furry_wolf_milk and tags.egg and tags.egg >= 1
         end,
-        priority = 20,                                                                                         -- 优先级
-        weight = 1,                                                                                            -- 权重
-        foodtype = FOODTYPE.MEAT,                                                                              -- 蔬菜:VEGGIE 肉:MEAT 好东西:GOODIES
-        health = 20,                                                                                           -- 生命值
-        hunger = 75,                                                                                           -- 饥饿
-        perishtime = TUNING.PERISH_PRESERVED,                                                                  -- 腐烂时间
-        sanity = 33,                                                                                           -- 精神
-        cooktime = 1,                                                                                          -- 烹饪时间:1对应20s
-        floater = { "med", nil, 0.55 },                                                                        -- 漂浮在水面的参数
-        card_def = { ingredients = { { "potato", 1 }, { "meat", 1 }, { "bird_egg", 1 }, { "goatmilk", 1 } } }, -- 食谱卡
+        priority = 20,                                                                                                -- 优先级
+        weight = 1,                                                                                                   -- 权重
+        foodtype = TUNING_FURRY.CURRY_OMELET_RICE.FOODTYPE,                                                           -- 蔬菜:VEGGIE 肉:MEAT 好东西:GOODIES
+        health = TUNING_FURRY.CURRY_OMELET_RICE.HEALTH,                                                               -- 生命值
+        hunger = TUNING_FURRY.CURRY_OMELET_RICE.HUNGER,                                                               -- 饥饿
+        perishtime = TUNING_FURRY.CURRY_OMELET_RICE.PERISH,                                                           -- 腐烂时间
+        sanity = TUNING_FURRY.CURRY_OMELET_RICE.SANITY,                                                               -- 精神
+        cooktime = TUNING_FURRY.CURRY_OMELET_RICE.COOKTIME,                                                           -- 烹饪时间:1对应20s
+        floater = { "med", nil, 0.55 },                                                                               -- 漂浮在水面的参数
+        card_def = { ingredients = { { "potato", 1 }, { "meat", 1 }, { "bird_egg", 1 }, { "furry_wolf_milk", 1 } } }, -- 食谱卡
     },
     -- 鱼丸葱面
     furry_fishball_scallion_noodles =
     {
         test = function(cooker, names, tags)
-            return tags.fish and tags.fish >= 1.5 and tags.dairy and tags.dairy >= 1
+            return tags.fish and tags.fish >= 1.5 and names.furry_wolf_milk
         end,
         priority = 20,
         weight = 1,
-        foodtype = FOODTYPE.MEAT,
-        health = 20,
-        hunger = 37.5,
-        perishtime = TUNING.PERISH_PRESERVED,
-        sanity = 5,
-        cooktime = 1,
+        foodtype = TUNING_FURRY.FISHBALL_SCALLION_NOODLES.FOODTYPE,
+        health = TUNING_FURRY.FISHBALL_SCALLION_NOODLES.HEALTH,
+        hunger = TUNING_FURRY.FISHBALL_SCALLION_NOODLES.HUNGER,
+        perishtime = TUNING_FURRY.FISHBALL_SCALLION_NOODLES.PERISH,
+        sanity = TUNING_FURRY.FISHBALL_SCALLION_NOODLES.SANITY,
+        cooktime = TUNING_FURRY.FISHBALL_SCALLION_NOODLES.COOKTIME,
         floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "fishmeat_small", 3 }, { "goatmilk", 1 } } },
+        card_def = { ingredients = { { "fishmeat_small", 3 }, { "furry_wolf_milk", 1 } } },
     },
     -- 茉莉奶绿
     furry_jasmine_milk_tea =
     {
         test = function(cooker, names, tags)
-            return tags.dairy and tags.dairy >= 1 and tags.sweetener and tags.sweetener >= 1 and tags.frozen and tags.frozen >= 1 and names.foliage
+            return names.furry_wolf_milk and tags.sweetener and tags.sweetener >= 1 and tags.frozen and tags.frozen >= 1 and names.foliage
         end,
         priority = 20,
         weight = 1,
-        foodtype = FOODTYPE.GOODIES,
-        health = 5,
-        hunger = 12.5,
-        perishtime = TUNING.PERISH_PRESERVED,
-        sanity = 80,
-        cooktime = 1,
+        foodtype = TUNING_FURRY.JASMINE_MILK_TEA.FOODTYPE,
+        health = TUNING_FURRY.JASMINE_MILK_TEA.HEALTH,
+        hunger = TUNING_FURRY.JASMINE_MILK_TEA.HUNGER,
+        perishtime = TUNING_FURRY.JASMINE_MILK_TEA.PERISH,
+        sanity = TUNING_FURRY.JASMINE_MILK_TEA.SANITY,
+        cooktime = TUNING_FURRY.JASMINE_MILK_TEA.COOKTIME,
         floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "goatmilk", 1 }, { "honey", 1 }, { "ice", 1 }, { "foliage", 1 } } },
+        card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "honey", 1 }, { "ice", 1 }, { "foliage", 1 } } },
         potlevel = "low",
+    },
+    -- 半熟芝士
+    furry_semi_cheese =
+    {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk and tags.fat and tags.fat >= 1 and tags.egg and tags.egg >= 2
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.SEMI_CHEESE.FOODTYPE,
+        health = TUNING_FURRY.SEMI_CHEESE.HEALTH,
+        hunger = TUNING_FURRY.SEMI_CHEESE.HUNGER,
+        perishtime = TUNING_FURRY.SEMI_CHEESE.PERISH,
+        sanity = TUNING_FURRY.SEMI_CHEESE.SANITY,
+        cooktime = TUNING_FURRY.SEMI_CHEESE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "butter", 1 }, { "bird_egg", 2 } } },
     },
 }
 

@@ -7,13 +7,16 @@ local _G = GLOBAL
 -- 获取mod配置,放到官方的全局变量tuning表中
 TUNING.FURRY_LANGUAGE = GetModConfigData("languages") --获取配置:语言
 
+require("tuning_furry") -- mod全局表
+
 -- ※万物皆是prefab
 PrefabFiles = {
     "furry_preparedfoods", -- mod料理
+    "furry_wolf_milk",     -- 狼奶
 }
 
 Assets = {
-    Asset("ANIM", "anim/furry_minisign1.zip"),          -- 小木牌256高清贴图
+    Asset("ANIM", "anim/furry_minisign1.zip"),          -- ※小木牌256高清贴图:在 furry_minisign_list.lua 中填写贴图名称和所在动画编号
 
     Asset("ATLAS", "images/furry_inventoryimages.xml"), -- 物品栏贴图集
     Asset("IMAGE", "images/furry_inventoryimages.tex"),
@@ -24,35 +27,16 @@ Assets = {
     Asset("IMAGE", "images/furry_cookbookimages.tex"),
 }
 
--- 判定别的mod是否开启，参考了风铃大佬的代码
-_G.FURRY_SETS = {
-    ENABLEDMODS = {},
-}
-local modsenabled = KnownModIndex:GetModsToLoad(true)
-local enabledmods = {}
-for k, dir in pairs(modsenabled) do
-    local info = KnownModIndex:GetModInfo(dir)
-    local name = info and info.name or "unknown"
-    enabledmods[dir] = name
-end
-local function IsModEnable(name)
-    for k, v in pairs(enabledmods) do
-        if v and (k:match(name) or v:match(name)) then
-            return true
-        end
-    end
-    return false
-end
-_G.FURRY_SETS.ENABLEDMODS["legion"] = IsModEnable("Legion") or IsModEnable("棱镜") -- 棱镜
+modimport("scripts/furry_linkmod.lua") -- 判定别的mod是否开启
 
 -- 注册小地图图标
 AddMinimapAtlas("images/furry_inventoryimages.xml")
 
 -- 设置语言
 if TUNING.FURRY_LANGUAGE == "Chinese" then
-    modimport("scripts/languages/furry_chinese.lua") --※中文
+    modimport("scripts/languages/furry_chinese.lua") -- ※中文
 elseif TUNING.FURRY_LANGUAGE == "English" then
-    modimport("scripts/languages/furry_english.lua") --※英文
+    modimport("scripts/languages/furry_english.lua") -- ※英文
 else
     modimport("scripts/languages/furry_chinese.lua")
 end

@@ -19,4 +19,5 @@ for k, recipe in pairs(spicedfoods) do
     end
 end
 
-AddIngredientValues({ "foliage" }, { inedible = 1 }) -- 蕨叶可以入锅
+AddIngredientValues({ "foliage" }, { inedible = 1 })      -- 蕨叶可以入锅
+AddIngredientValues({ "furry_wolf_milk" }, { dairy = 1 }) -- 狼奶
