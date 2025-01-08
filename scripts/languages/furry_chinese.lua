@@ -28,3 +28,5 @@ STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRY_BUTTER = "不是很好看,但是很实
 -- 食材
 STRINGS.NAMES.FURRY_WOLF_MILK = "狼奶"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRY_WOLF_MILK = "闻起来味道怪怪的"
+--=================================================buff=======================================
+STRINGS.NAMES.BUFF_FURRYZISHUBAOROU = "制作减半"

@@ -4,6 +4,27 @@
     ]]
 local foods =
 {
+    --紫苏包肉
+    furry_zishubaorou = {
+        test = function(cooker, names, tags)
+            return names.foliage and names.furry_wolf_milk and tags.meat and tags.veggie
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.ZISUBAOROU.FOODTYPE,
+        health = TUNING_FURRY.ZISUBAOROU.HEALTH,
+        hunger = TUNING_FURRY.ZISUBAOROU.HUNGER,
+        sanity = TUNING_FURRY.ZISUBAOROU.SANITY,
+        perishtime = TUNING_FURRY.ZISUBAOROU.PERISH,
+        cooktime = TUNING_FURRY.ZISUBAOROU.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "foliage", 1 }, { "furry_wolf_milk", 1 }, { "meat", 1 }, { "veggie", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wilson" then
+                eater:AddDebuff("buff_furryzishubaorou", "buff_furryzishubaorou")
+            end
+        end
+    },
     -- 咖喱蛋包饭
     furry_curry_omelet_rice =
     {
