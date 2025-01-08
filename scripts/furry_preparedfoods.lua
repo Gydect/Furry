@@ -2,6 +2,14 @@
 	tags所有标签: fruit-水果度, monster-怪物度, sweetener-甜度, veggie-菜度, meat-肉度, frozen-冰度, fish-鱼度, egg-蛋度
 	decoration-装饰度-蝴蝶翅膀, fat-油脂度-黄油, dairy-奶度, inedible-不可食用度, seed-种子-桦栗果, magic-魔法度-噩梦燃料
     ]]
+---计算食物和烹饪食物的数量
+local function Cooked(names, name)
+    local num1 = names[name] or 0
+    local num2 = names[name .. "_cooked"] or 0
+    local num = num1 + num2
+    return num > 0 and num
+end
+
 local foods =
 {
     -- 紫苏包肉
@@ -157,6 +165,69 @@ local foods =
         cooktime = TUNING_FURRY.BUTTER.COOKTIME,
         floater = { "med", nil, 0.55 },
         card_def = { ingredients = { { "furry_wolf_milk", 4 } } },
+    },
+    -- 棉花糖
+    furry_marshmallow = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk == 2 and names.honey == 2
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.MARSHMALLOW.FOODTYPE,
+        health = TUNING_FURRY.MARSHMALLOW.HEALTH,
+        hunger = TUNING_FURRY.MARSHMALLOW.HUNGER,
+        perishtime = TUNING_FURRY.MARSHMALLOW.PERISH,
+        sanity = TUNING_FURRY.MARSHMALLOW.SANITY,
+        cooktime = TUNING_FURRY.MARSHMALLOW.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 2 }, { "honey", 2 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wanda" then
+                eater:AddDebuff("buff_furry_marshmallow", "buff_furry_marshmallow")
+            end
+        end
+    },
+    -- 坚果能量棒
+    furry_nut_energy_bar = {
+        test = function(cooker, names, tags)
+            return Cooked(names, "berries") == 2 and Cooked(names, "acorn") and names.furry_wolf_milk
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.NUT_ENERGY_BAR.FOODTYPE,
+        health = TUNING_FURRY.NUT_ENERGY_BAR.HEALTH,
+        hunger = TUNING_FURRY.NUT_ENERGY_BAR.HUNGER,
+        perishtime = TUNING_FURRY.NUT_ENERGY_BAR.PERISH,
+        sanity = TUNING_FURRY.NUT_ENERGY_BAR.SANITY,
+        cooktime = TUNING_FURRY.NUT_ENERGY_BAR.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "berries", 2 }, { "acorn", 1 }, { "furry_wolf_milk" }, 1 } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "" then
+                eater:AddDebuff("buff_furry_nut_energy_bar", "buff_furry_nut_energy_bar")
+            end
+        end
+    },
+    -- 榴莲酱千层
+    furry_durian_mille_feuille = {
+        test = function(cooker, names, tags)
+            return Cooked(names, "durian") and Cooked(names, "egg") and names.honey and names.furry_wolf_milk
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.DURIAN_MILLE_FEUILLE.FOODTYPE,
+        health = TUNING_FURRY.DURIAN_MILLE_FEUILLE.HEALTH,
+        hunger = TUNING_FURRY.DURIAN_MILLE_FEUILLE.HUNGER,
+        perishtime = TUNING_FURRY.DURIAN_MILLE_FEUILLE.PERISH,
+        sanity = TUNING_FURRY.DURIAN_MILLE_FEUILLE.SANITY,
+        cooktime = TUNING_FURRY.DURIAN_MILLE_FEUILLE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "berries", 2 }, { "acorn", 1 }, { "furry_wolf_milk" }, 1 } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wurt" then
+                eater:AddDebuff("buff_furry_durian_mille_feuille", "buff_furry_durian_mille_feuille")
+            end
+        end
     },
 }
 
