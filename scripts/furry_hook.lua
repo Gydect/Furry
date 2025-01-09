@@ -93,3 +93,38 @@ local target_items = { "eyebrellahat", "cane", "trunkvest_winter", "pigskin" }
 for _, prefab_name in ipairs(target_items) do
     AddTradableToPrefab(prefab_name)
 end
+
+--[[ 给力量值组件加一个参数,该参数可以锁定沃尔夫冈的力量值 ]]
+local function LockingMightiness(self)
+    self.furry_locked = false
+
+    local OldDoDelta = self.DoDelta
+    self.DoDelta = function(self, delta, force_update, delay_skin, forcesound, fromgym)
+        if self.furry_locked then
+            return
+        end
+        OldDoDelta(self, delta, force_update, delay_skin, forcesound, fromgym)
+    end
+
+    local OldDoDec = self.DoDec
+    self.DoDec = function(self, dt, ignore_damage)
+        if self.furry_locked then
+            return
+        end
+        OldDoDec(self, dt, ignore_damage)
+    end
+
+    -- 添加锁定和解锁方法
+    function self:Furry_Lock()
+        self.furry_locked = true
+    end
+
+    function self:Furry_Unlock()
+        self.furry_locked = false
+    end
+
+    function self:Furry_IsLocked()
+        return self.furry_locked
+    end
+end
+AddComponentPostInit("mightiness", LockingMightiness)

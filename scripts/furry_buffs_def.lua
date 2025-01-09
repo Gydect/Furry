@@ -43,14 +43,42 @@ local furry_buffs = {
         prefabs = {},
     },
 
-    -- 芝士土豆焗奶
-    furry_cheese_potato_bake = {
-        name = "furry_cheese_potato_bake",
+    -- 芝士土豆焗奶(移速加成)
+    furry_cheese_potato_bake_a = {
+        name = "furry_cheese_potato_bake_a",
         onattachedfn = function(inst, target)
+            if target.components.locomotor then
+                target.components.locomotor:SetExternalSpeedMultiplier(inst, "furry_cheese_potato_bake", 1.2)
+            end
         end,
         ondetachedfn = function(inst, target)
+            if target.components.locomotor then
+                target.components.locomotor:RemoveExternalSpeedMultiplier(inst, "furry_cheese_potato_bake")
+            end
         end,
         duration = 180,
+    },
+
+    -- 芝士土豆焗奶(饱食度下降减缓&&锁定健身值)
+    furry_cheese_potato_bake_b = {
+        name = "furry_cheese_potato_bake_b",
+        onattachedfn = function(inst, target)
+            if target.components.hunger ~= nil then
+                target.components.hunger.burnratemodifiers:SetModifier(inst, 0.5)
+            end
+            if target.components.mightiness ~= nil then
+                target.components.mightiness:Furry_Lock()
+            end
+        end,
+        ondetachedfn = function(inst, target)
+            if target.components.hunger ~= nil then
+                target.components.hunger.burnratemodifiers:SetModifier(inst, 0.5)
+            end
+            if target.components.mightiness ~= nil then
+                target.components.mightiness:Furry_Unlock()
+            end
+        end,
+        duration = 720,
     },
 }
 

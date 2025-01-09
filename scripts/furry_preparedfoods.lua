@@ -3,7 +3,7 @@
 	decoration-装饰度-蝴蝶翅膀, fat-油脂度-黄油, dairy-奶度, inedible-不可食用度, seed-种子-桦栗果, magic-魔法度-噩梦燃料
     ]]
 
--- 计算食物和烹饪食物的数量
+-- 计算食物和烹饪食物的数量,函数是可以的,就是智能锅无法预测
 local function Cooked(names, name)
     local num1 = names[name] or 0
     local num2 = names[name .. "_cooked"] or 0
@@ -40,7 +40,7 @@ local foods =
             return (names.pepper or names.pepper_cooked) and names.furry_wolf_milk
                 and tags.meat and tags.meat >= 1 and tags.veggie and tags.veggie > 1
         end,
-        priority = 20,
+        priority = 25,
         weight = 1,
         foodtype = TUNING_FURRY.SPICY_STEW.FOODTYPE,
         health = TUNING_FURRY.SPICY_STEW.HEALTH,
@@ -74,6 +74,12 @@ local foods =
         cooktime = TUNING_FURRY.CHEESE_POTATO_BAKE.COOKTIME,
         floater = { "med", nil, 0.55 },
         card_def = { ingredients = { { "potato", 1 }, { "furry_wolf_milk", 2 }, { "bird_egg", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wolfgang" then
+                eater:AddDebuff("buff_furry_cheese_potato_bake_a", "buff_furry_cheese_potato_bake_a")
+                eater:AddDebuff("buff_furry_cheese_potato_bake_b", "buff_furry_cheese_potato_bake_b")
+            end
+        end
     },
     -- 咖喱蛋包饭
     furry_curry_omelet_rice =
@@ -232,7 +238,8 @@ local foods =
     -- 坚果能量棒
     furry_nut_energy_bar = {
         test = function(cooker, names, tags)
-            return Cooked(names, "berries") == 2 and Cooked(names, "acorn") and names.furry_wolf_milk
+            return (names.acorn or names.acorn_cooked) and names.furry_wolf_milk
+                and (names.berries == 2 or names.berries_cooked == 2 or (names.berries and names.berries_cooked))
         end,
         priority = 20,
         weight = 1,
@@ -253,7 +260,7 @@ local foods =
     -- 榴莲酱千层
     furry_durian_mille_feuille = {
         test = function(cooker, names, tags)
-            return Cooked(names, "durian") and Cooked(names, "bird_egg") and names.honey and names.furry_wolf_milk
+            return names.honey and names.furry_wolf_milk and tags.egg and (names.durian or names.durian_cooked)
         end,
         priority = 20,
         weight = 1,
@@ -302,7 +309,8 @@ local foods =
     -- 红石榴丝绒千层
     furry_pomegranate_velvet = {
         test = function(cooker, names, tags)
-            return Cooked(names, "pomegranate") == 2 and names.furry_wolf_milk and names.ice
+            return names.furry_wolf_milk and names.ice
+                and (names.pomegranate == 2 or names.pomegranate_cooked == 2 or (names.pomegranate and names.pomegranate_cooked))
         end,
         priority = 20,
         weight = 1,
