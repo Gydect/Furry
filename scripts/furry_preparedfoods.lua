@@ -48,8 +48,16 @@ local foods =
         sanity = TUNING_FURRY.SPICY_STEW.SANITY,
         perishtime = TUNING_FURRY.SPICY_STEW.PERISH,
         cooktime = TUNING_FURRY.SPICY_STEW.COOKTIME,
+        temperature = TUNING.HOT_FOOD_BONUS_TEMP,
+        temperatureduration = TUNING.BUFF_FOOD_TEMP_DURATION,
+        nochill = true,
         floater = { "med", nil, 0.55 },
         card_def = { ingredients = { { "pepper", 2 }, { "meat", 1 }, { "furry_wolf_milk", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "willow" then
+                eater:AddDebuff("buff_furry_spicy_stew", "buff_furry_spicy_stew")
+            end
+        end
     },
     -- 芝士土豆焗奶
     furry_cheese_potato_bake = {
