@@ -201,9 +201,9 @@ local foods =
         sanity = TUNING_FURRY.NUT_ENERGY_BAR.SANITY,
         cooktime = TUNING_FURRY.NUT_ENERGY_BAR.COOKTIME,
         floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "berries", 2 }, { "acorn", 1 }, { "furry_wolf_milk" }, 1 } },
+        card_def = { ingredients = { { "berries", 2 }, { "acorn", 1 }, { "furry_wolf_milk", 1 } } },
         oneatenfn = function(inst, eater)
-            if eater and eater.prefab == "" then
+            if eater and eater.prefab == "walter" then
                 eater:AddDebuff("buff_furry_nut_energy_bar", "buff_furry_nut_energy_bar")
             end
         end
@@ -211,7 +211,7 @@ local foods =
     -- 榴莲酱千层
     furry_durian_mille_feuille = {
         test = function(cooker, names, tags)
-            return Cooked(names, "durian") and Cooked(names, "egg") and names.honey and names.furry_wolf_milk
+            return Cooked(names, "durian") and Cooked(names, "bird_egg") and names.honey and names.furry_wolf_milk
         end,
         priority = 20,
         weight = 1,
@@ -222,10 +222,59 @@ local foods =
         sanity = TUNING_FURRY.DURIAN_MILLE_FEUILLE.SANITY,
         cooktime = TUNING_FURRY.DURIAN_MILLE_FEUILLE.COOKTIME,
         floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "berries", 2 }, { "acorn", 1 }, { "furry_wolf_milk" }, 1 } },
+        card_def = { ingredients = { { "durian", 1 }, { "bird_egg", 1 }, { "honey", 1 }, { "furry_wolf_milk", 1 } } },
         oneatenfn = function(inst, eater)
             if eater and eater.prefab == "wurt" then
                 eater:AddDebuff("buff_furry_durian_mille_feuille", "buff_furry_durian_mille_feuille")
+            end
+        end
+    },
+    -- 营养杯
+    furry_nutrition_cup = {
+        test = function(cooker, names, tags)
+            return names.glommerfuel and names.furry_wolf_milk and names.poop == 2
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.NUTRITION_CUP.FOODTYPE,
+        health = TUNING_FURRY.NUTRITION_CUP.HEALTH,
+        hunger = TUNING_FURRY.NUTRITION_CUP.HUNGER,
+        perishtime = TUNING_FURRY.NUTRITION_CUP.PERISH,
+        sanity = TUNING_FURRY.NUTRITION_CUP.SANITY,
+        cooktime = TUNING_FURRY.NUTRITION_CUP.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "glommerfuel", 1 }, { "furry_wolf_milk", 1 }, { "poop", 2 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wormwood" then
+                if eater.components.bloomness then
+                    --设置3级开花
+                    eater.components.bloomness:SetLevel(3)
+                    --设置1000点开花值
+                    eater.components.bloomness:Fertilize(1000)
+                end
+                --缓慢回血30buff
+                eater:AddDebuff("buff_furry_nutrition_cup", "buff_furry_nutrition_cup")
+            end
+        end
+    },
+    -- 红石榴丝绒千层
+    furry_pomegranate_velvet = {
+        test = function(cooker, names, tags)
+            return Cooked(names, "pomegranate") == 2 and names.furry_wolf_milk and names.ice
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.POMEGRANATE_VELVET.FOODTYPE,
+        health = TUNING_FURRY.POMEGRANATE_VELVET.HEALTH,
+        hunger = TUNING_FURRY.POMEGRANATE_VELVET.HUNGER,
+        perishtime = TUNING_FURRY.POMEGRANATE_VELVET.PERISH,
+        sanity = TUNING_FURRY.POMEGRANATE_VELVET.SANITY,
+        cooktime = TUNING_FURRY.POMEGRANATE_VELVET.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "pomegranate", 2 }, { "furry_wolf_milk", 1 }, { "ice", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wortox" then
+                eater:AddDebuff("buff_furry_pomegranate_velvet", "buff_furry_pomegranate_velvet")
             end
         end
     },

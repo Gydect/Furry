@@ -130,6 +130,16 @@ local function CustomCombatDamage(inst, target, weapon, multiplier, mount)
 		--调用旧方法
 		return inst._furry_marshmallow_CustomCombatDamage and inst._furry_marshmallow_CustomCombatDamage(inst, target, weapon, multiplier, mount)
 end
+---给投射物加上10位面伤害
+local function NutEnergyBarOnAttack(attacker, data)
+		local projectile = data.projectile
+		if projectile then
+				if not projectile.components.planardamage then
+						projectile:AddComponent("planardamage")
+				end
+				projectile.components.planardamage:AddBonus(attacker, 10, "furry_nut_energy_bar")
+		end
+end
 
 --buff列表
 local buffs = {
@@ -200,8 +210,11 @@ local buffs = {
 				--坚果能量棒buff
 				name = "furry_nut_energy_bar",
 				onattachedfn = function(inst, target)
+						--监听onattackother，给投射物加上位面伤害
+						inst:ListenForEvent("onattackother", NutEnergyBarOnAttack, target)
 				end,
 				ondetachedfn = function(inst, target)
+						inst:RemoveEventCallback("onattackother", NutEnergyBarOnAttack, target)
 				end,
 				duration = 180
 		},
@@ -221,7 +234,7 @@ local buffs = {
 								local preferseating = target.components.eater.preferseating or {}
 								table.insert(caneat, FOODTYPE.MEAT)
 								table.insert(preferseating, FOODTYPE.MEAT)
-								inst.components.eater:SetDiet(caneat, preferseating)
+								target.components.eater:SetDiet(caneat, preferseating)
 						end
 				end,
 				ondetachedfn = function(inst, target)
@@ -243,10 +256,40 @@ local buffs = {
 												break
 										end
 								end
-								inst.components.eater:SetDiet(caneat, preferseating)
+								target.components.eater:SetDiet(caneat, preferseating)
 						end
 				end,
 				duration = 960
+		},
+		{
+				--营养杯buff
+				name = "furry_nutrition_cup",
+				onattachedfn = function(inst, target)
+						--缓慢回复30点血
+						inst.task = inst:DoPeriodicTask(2, function()
+								if target.components.health ~= nil and not target.components.health:IsDead() and not target:HasTag("playerghost") then
+										target.components.health:DoDelta(2)
+								end
+						end)
+				end,
+				ondetachedfn = function(inst, target)
+						if inst.task then
+								inst.task:Cancel()
+								inst.task = nil
+						end
+				end,
+				duration = 30
+		},
+		{
+				--红石榴丝绒千层buff
+				name = "furry_pomegranate_velvet",
+				onattachedfn = function(inst, target)
+						target:AddTag("furry_pomegranate_velvet")
+				end,
+				ondetachedfn = function(inst, target)
+						target:RemoveTag("furry_pomegranate_velvet")
+				end,
+				duration = 180
 		},
 }
 local ret = {}
