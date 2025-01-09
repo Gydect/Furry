@@ -3,7 +3,8 @@ local _G = GLOBAL
 --[[ 重写小木牌(插在地上的)的绘图机制，让小木牌可以画上本mod里的物品 ]]
 local invPrefabList = require("furry_minisign_list")                            -- mod中有物品栏图片的prefabs的表
 local invBuildMaps = { "furry_minisign1" }
-local function OnDrawn_minisign(inst, image, src, atlas, bgimage, bgatlas, ...) -- 这里image是所用图片的名字，而非prefab的名字
+local function OnDrawn_minisign(inst, image, src, atlas, bgimage, bgatlas, ...)
+    -- 这里image是所用图片的名字，而非prefab的名字
     if inst.drawable_ondrawnfn_furry ~= nil then
         inst.drawable_ondrawnfn_furry(inst, image, src, atlas, bgimage, bgatlas, ...)
     end
@@ -93,6 +94,48 @@ local target_items = { "eyebrellahat", "cane", "trunkvest_winter", "pigskin" }
 for _, prefab_name in ipairs(target_items) do
     AddTradableToPrefab(prefab_name)
 end
+
+--hook移除组件，甜腻蔬菜汤buff快速搬运重物
+AddComponentPostInit("locomotor", function(self)
+    local oldGetSpeedMultiplier = self.GetSpeedMultiplier
+    if TheWorld.ismastersim then
+        self.GetSpeedMultiplier = function(self)
+            if self.inst:HasTag("furry_strong") and not (self.inst.components.rider ~= nil and self.inst.components.rider:IsRiding()) then
+                local mult = self:ExternalSpeedMultiplier()
+                if self.inst.components.inventory ~= nil then
+                    for k, v in pairs(self.inst.components.inventory.equipslots) do
+                        if v.components.equippable ~= nil then
+                            local item_speed_mult = v.components.equippable:GetWalkSpeedMult()
+                            mult = mult * math.max(item_speed_mult, 1)
+                        end
+                    end
+                end
+                return mult * (self:TempGroundSpeedMultiplier() or self.groundspeedmultiplier) * self.throttle
+            elseif oldGetSpeedMultiplier then
+                return oldGetSpeedMultiplier(self)
+            end
+        end
+    else
+        self.GetSpeedMultiplier = function(self)
+            if self.inst:HasTag("furry_strong") and not (self.inst.replica.rider and self.inst.replica.rider:IsRiding()) then
+                local mult = self:ExternalSpeedMultiplier()
+                local inventory = self.inst.replica.inventory
+                if inventory ~= nil then
+                    for k, v in pairs(inventory:GetEquips()) do
+                        local inventoryitem = v.replica.inventoryitem
+                        if inventoryitem ~= nil then
+                            local item_speed_mult = inventoryitem:GetWalkSpeedMult()
+                            mult = mult * math.max(item_speed_mult, 1)
+                        end
+                    end
+                end
+                return mult * (self:TempGroundSpeedMultiplier() or self.groundspeedmultiplier) * self.throttle
+            elseif oldGetSpeedMultiplier then
+                return oldGetSpeedMultiplier(self)
+            end
+        end
+    end
+end)
 
 --[[ 给力量值组件加一个参数,该参数可以锁定沃尔夫冈的力量值 ]]
 local function LockingMightiness(self)

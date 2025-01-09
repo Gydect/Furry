@@ -11,8 +11,7 @@ local function Cooked(names, name)
     return num > 0 and num
 end
 
-local foods =
-{
+local foods = {
     -- 紫苏包肉
     furry_perilla_wraps = {
         test = function(cooker, names, tags)
@@ -82,8 +81,7 @@ local foods =
         end
     },
     -- 咖喱蛋包饭
-    furry_curry_omelet_rice =
-    {
+    furry_curry_omelet_rice = {
         -- 配方
         test = function(cooker, names, tags)
             return tags.meat and tags.meat >= 1 and (names.potato or names.potato_cooked) and names.furry_wolf_milk and tags.egg and tags.egg >= 1
@@ -100,8 +98,7 @@ local foods =
         card_def = { ingredients = { { "potato", 1 }, { "meat", 1 }, { "bird_egg", 1 }, { "furry_wolf_milk", 1 } } },
     },
     -- 鱼丸葱面
-    furry_fishball_scallion_noodles =
-    {
+    furry_fishball_scallion_noodles = {
         test = function(cooker, names, tags)
             return tags.fish and tags.fish >= 1.5 and names.furry_wolf_milk
         end,
@@ -117,8 +114,7 @@ local foods =
         card_def = { ingredients = { { "fishmeat_small", 3 }, { "furry_wolf_milk", 1 } } },
     },
     -- 茉莉奶绿
-    furry_jasmine_milk_tea =
-    {
+    furry_jasmine_milk_tea = {
         test = function(cooker, names, tags)
             return names.furry_wolf_milk and tags.sweetener and tags.sweetener >= 1 and tags.frozen and tags.frozen >= 1 and names.foliage
         end,
@@ -140,8 +136,7 @@ local foods =
         potlevel = "low",
     },
     -- 半熟芝士
-    furry_semi_cheese =
-    {
+    furry_semi_cheese = {
         test = function(cooker, names, tags)
             return names.furry_wolf_milk and tags.fat and tags.fat >= 1 and tags.egg and tags.egg >= 2
         end,
@@ -157,8 +152,7 @@ local foods =
         card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "butter", 1 }, { "bird_egg", 2 } } },
     },
     -- 提拉米苏
-    furry_tiramisu =
-    {
+    furry_tiramisu = {
         test = function(cooker, names, tags)
             return names.furry_wolf_milk and tags.sweetener and tags.sweetener >= 3
                 and tags.fat and tags.fat >= 1 and tags.egg and tags.egg >= 1
@@ -180,8 +174,7 @@ local foods =
         card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "royal_jelly", 1 }, { "butter", 1 }, { "bird_egg", 1 } } },
     },
     -- 蒜香牛蛙
-    furry_garlic_bullfrog =
-    {
+    furry_garlic_bullfrog = {
         test = function(cooker, names, tags)
             return names.furry_wolf_milk and (names.garlic or names.garlic_cooked)
                 and (names.froglegs == 2 or names.froglegs_cooked == 2 or (names.froglegs and names.froglegs_cooked))
@@ -198,8 +191,7 @@ local foods =
         card_def = { ingredients = { { "froglegs", 2 }, { "garlic", 1 }, { "furry_wolf_milk", 1 } } },
     },
     -- 劣质黄油
-    furry_butter =
-    {
+    furry_butter = {
         test = function(cooker, names, tags)
             return names.furry_wolf_milk == 4
         end,
@@ -325,6 +317,90 @@ local foods =
         oneatenfn = function(inst, eater)
             if eater and eater.prefab == "wortox" then
                 eater:AddDebuff("buff_furry_pomegranate_velvet", "buff_furry_pomegranate_velvet")
+            end
+        end
+    },
+    -- 奶油蛤蜊炖蛋
+    furry_creamy_clam_egg_stew = {
+        test = function(cooker, names, tags)
+            return Cooked(names, "barnacle") == 2 and names.furry_wolf_milk and Cooked(names, "bird_egg")
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.CREAMY_CLAM_EGG_STEW.FOODTYPE,
+        health = TUNING_FURRY.CREAMY_CLAM_EGG_STEW.HEALTH,
+        hunger = TUNING_FURRY.CREAMY_CLAM_EGG_STEW.HUNGER,
+        perishtime = TUNING_FURRY.CREAMY_CLAM_EGG_STEW.PERISH,
+        sanity = TUNING_FURRY.CREAMY_CLAM_EGG_STEW.SANITY,
+        cooktime = TUNING_FURRY.CREAMY_CLAM_EGG_STEW.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "barnacle", 2 }, { "furry_wolf_milk", 1 }, { "bird_egg", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "warly" then
+                eater:AddDebuff("buff_" .. inst.prefab, "buff_" .. inst.prefab)
+            end
+        end
+    },
+    -- 甜腻蔬菜汤
+    furry_sweet_vegetable_soup = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk == 2 and tags.veggie and tags.veggie >= 2
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.SWEET_VEGETABLE_SOUP.FOODTYPE,
+        health = TUNING_FURRY.SWEET_VEGETABLE_SOUP.HEALTH,
+        hunger = TUNING_FURRY.SWEET_VEGETABLE_SOUP.HUNGER,
+        perishtime = TUNING_FURRY.SWEET_VEGETABLE_SOUP.PERISH,
+        sanity = TUNING_FURRY.SWEET_VEGETABLE_SOUP.SANITY,
+        cooktime = TUNING_FURRY.SWEET_VEGETABLE_SOUP.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 2 }, { "veggie", 2 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "winona" then
+                eater:AddDebuff("buff_" .. inst.prefab, "buff_" .. inst.prefab)
+            end
+        end
+    },
+    -- 香草甜筒
+    furry_vanilla_cone = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk == 2 and names.honey and names.ice
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.VANILLA_CONE.FOODTYPE,
+        health = TUNING_FURRY.VANILLA_CONE.HEALTH,
+        hunger = TUNING_FURRY.VANILLA_CONE.HUNGER,
+        perishtime = TUNING_FURRY.VANILLA_CONE.PERISH,
+        sanity = TUNING_FURRY.VANILLA_CONE.SANITY,
+        cooktime = TUNING_FURRY.VANILLA_CONE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 2 }, { "honey", 1 }, { "ice", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "webber" then
+                eater:AddDebuff("buff_" .. inst.prefab, "buff_" .. inst.prefab)
+            end
+        end
+    },
+    --火鸡盛宴
+    furry_turkey_feast = {
+        test = function(cooker, names, tags)
+            return Cooked(names, "drumstick") == 2 and names.furry_wolf_milk == 1 and Cooked(names, "meat")
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.TURKEY_FEAST.FOODTYPE,
+        health = TUNING_FURRY.TURKEY_FEAST.HEALTH,
+        hunger = TUNING_FURRY.TURKEY_FEAST.HUNGER,
+        perishtime = TUNING_FURRY.TURKEY_FEAST.PERISH,
+        sanity = TUNING_FURRY.TURKEY_FEAST.SANITY,
+        cooktime = TUNING_FURRY.TURKEY_FEAST.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "drumstick", 2 }, { "furry_wolf_milk", 1 }, { "meat", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wathgrithr" then
+                eater:AddDebuff("buff_" .. inst.prefab, "buff_" .. inst.prefab)
             end
         end
     },
