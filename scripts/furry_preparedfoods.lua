@@ -2,7 +2,8 @@
 	tags所有标签: fruit-水果度, monster-怪物度, sweetener-甜度, veggie-菜度, meat-肉度, frozen-冰度, fish-鱼度, egg-蛋度
 	decoration-装饰度-蝴蝶翅膀, fat-油脂度-黄油, dairy-奶度, inedible-不可食用度, seed-种子-桦栗果, magic-魔法度-噩梦燃料
     ]]
----计算食物和烹饪食物的数量
+
+-- 计算食物和烹饪食物的数量
 local function Cooked(names, name)
     local num1 = names[name] or 0
     local num2 = names[name .. "_cooked"] or 0
@@ -26,12 +27,45 @@ local foods =
         perishtime = TUNING_FURRY.PERILLA_WRAPS.PERISH,
         cooktime = TUNING_FURRY.PERILLA_WRAPS.COOKTIME,
         floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "foliage", 1 }, { "furry_wolf_milk", 1 }, { "meat", 1 }, { "veggie", 1 } } },
+        card_def = { ingredients = { { "foliage", 1 }, { "furry_wolf_milk", 1 }, { "meat", 1 }, { "carrot", 1 } } },
         oneatenfn = function(inst, eater)
             if eater and eater.prefab == "wilson" then
                 eater:AddDebuff("buff_furry_perilla_wraps", "buff_furry_perilla_wraps")
             end
         end
+    },
+    -- 冒菜炖肉
+    furry_spicy_stew = {
+        test = function(cooker, names, tags)
+            return (names.pepper or names.pepper_cooked) and names.furry_wolf_milk
+                and tags.meat and tags.meat >= 1 and tags.veggie and tags.veggie > 1
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.SPICY_STEW.FOODTYPE,
+        health = TUNING_FURRY.SPICY_STEW.HEALTH,
+        hunger = TUNING_FURRY.SPICY_STEW.HUNGER,
+        sanity = TUNING_FURRY.SPICY_STEW.SANITY,
+        perishtime = TUNING_FURRY.SPICY_STEW.PERISH,
+        cooktime = TUNING_FURRY.SPICY_STEW.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "pepper", 2 }, { "meat", 1 }, { "furry_wolf_milk", 1 } } },
+    },
+    -- 芝士土豆焗奶
+    furry_cheese_potato_bake = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk == 2 and (names.potato or names.potato_cooked) and tags.egg and tags.egg >= 1
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.CHEESE_POTATO_BAKE.FOODTYPE,
+        health = TUNING_FURRY.CHEESE_POTATO_BAKE.HEALTH,
+        hunger = TUNING_FURRY.CHEESE_POTATO_BAKE.HUNGER,
+        perishtime = TUNING_FURRY.CHEESE_POTATO_BAKE.PERISH,
+        sanity = TUNING_FURRY.CHEESE_POTATO_BAKE.SANITY,
+        cooktime = TUNING_FURRY.CHEESE_POTATO_BAKE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "potato", 1 }, { "furry_wolf_milk", 2 }, { "bird_egg", 1 } } },
     },
     -- 咖喱蛋包饭
     furry_curry_omelet_rice =
