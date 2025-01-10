@@ -80,6 +80,51 @@ local foods = {
             end
         end
     },
+    -- 香蕉冻奶布丁
+    furry_banana_milk_pudding = {
+        test = function(cooker, names, tags)
+            return (names.cave_banana or names.cave_banana_cooked) and names.furry_wolf_milk and names.glommerfuel and tags.frozen
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.BANANA_MILK_PUDDING.FOODTYPE,
+        health = TUNING_FURRY.BANANA_MILK_PUDDING.HEALTH,
+        hunger = TUNING_FURRY.BANANA_MILK_PUDDING.HUNGER,
+        perishtime = TUNING_FURRY.BANANA_MILK_PUDDING.PERISH,
+        sanity = TUNING_FURRY.BANANA_MILK_PUDDING.SANITY,
+        cooktime = TUNING_FURRY.BANANA_MILK_PUDDING.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "cave_banana", 1 }, { "furry_wolf_milk", 1 }, { "glommerfuel", 1 }, { "ice", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wendy" then
+                eater:AddDebuff("buff_furry_banana_milk_pudding", "buff_furry_banana_milk_pudding")
+            end
+        end
+    },
+    -- 酥麻蝴蝶派
+    furry_crispy_butterfly_pie = {
+        test = function(cooker, names, tags)
+            return names.butterflywings and names.furry_wolf_milk == 2 and names.lightninggoathorn
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.CRISPY_BUTTERFLY_PIE.FOODTYPE,
+        health = TUNING_FURRY.CRISPY_BUTTERFLY_PIE.HEALTH,
+        hunger = TUNING_FURRY.CRISPY_BUTTERFLY_PIE.HUNGER,
+        perishtime = TUNING_FURRY.CRISPY_BUTTERFLY_PIE.PERISH,
+        sanity = TUNING_FURRY.CRISPY_BUTTERFLY_PIE.SANITY,
+        cooktime = TUNING_FURRY.CRISPY_BUTTERFLY_PIE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "butterflywings", 1 }, { "furry_wolf_milk", 2 }, { "lightninggoathorn", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wx78" then
+                if eater.components.upgrademoduleowner ~= nil then
+                    eater.components.upgrademoduleowner:AddCharge(3)
+                end
+                eater:AddDebuff("buff_furry_crispy_butterfly_pie", "buff_furry_crispy_butterfly_pie")
+            end
+        end
+    },
     -- 咖喱蛋包饭
     furry_curry_omelet_rice = {
         -- 配方
@@ -355,7 +400,7 @@ local foods = {
         sanity = TUNING_FURRY.SWEET_VEGETABLE_SOUP.SANITY,
         cooktime = TUNING_FURRY.SWEET_VEGETABLE_SOUP.COOKTIME,
         floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "furry_wolf_milk", 2 }, { "veggie", 2 } } },
+        card_def = { ingredients = { { "furry_wolf_milk", 2 }, { "carrot", 2 } } },
         oneatenfn = function(inst, eater)
             if eater and eater.prefab == "winona" then
                 eater:AddDebuff("buff_" .. inst.prefab, "buff_" .. inst.prefab)

@@ -1,7 +1,8 @@
 local _G = GLOBAL
-
+--================================================================================================================
 --[[ 重写小木牌(插在地上的)的绘图机制，让小木牌可以画上本mod里的物品 ]]
-local invPrefabList = require("furry_minisign_list")                            -- mod中有物品栏图片的prefabs的表
+--================================================================================================================
+local invPrefabList = require("furry_minisign_list") -- mod中有物品栏图片的prefabs的表
 local invBuildMaps = { "furry_minisign1" }
 local function OnDrawn_minisign(inst, image, src, atlas, bgimage, bgatlas, ...)
     -- 这里image是所用图片的名字，而非prefab的名字
@@ -26,7 +27,9 @@ AddPrefabPostInit("minisign", MiniSign_init)
 AddPrefabPostInit("minisign_drawn", MiniSign_init)
 AddPrefabPostInit("decor_pictureframe", MiniSign_init)
 
+--================================================================================================================
 --[[ 高清256*256贴图兼容棱镜的白木展示柜 ]]
+--================================================================================================================
 local function Furry_SetShowSlot(inst, slot)
     local item = inst.components.container.slots[slot]
     if item ~= nil then
@@ -77,7 +80,9 @@ if _G.FURRY_SETS.ENABLEDMODS["legion"] then
     AddPrefabPostInit("chest_whitewood_big_inf", HookWhitewood)
 end
 
+--================================================================================================================
 --[[ 给部分物品添加可以交易的组件，使其可以给予铃铛 ]]
+--================================================================================================================
 local function AddTradableToPrefab(prefab_name)
     AddPrefabPostInit(prefab_name, function(inst)
         if not TheWorld.ismastersim then
@@ -95,7 +100,9 @@ for _, prefab_name in ipairs(target_items) do
     AddTradableToPrefab(prefab_name)
 end
 
---hook移除组件，甜腻蔬菜汤buff快速搬运重物
+--================================================================================================================
+--[[hook移除组件，甜腻蔬菜汤buff快速搬运重物 ]]
+--================================================================================================================
 AddComponentPostInit("locomotor", function(self)
     local oldGetSpeedMultiplier = self.GetSpeedMultiplier
     if TheWorld.ismastersim then
@@ -137,7 +144,9 @@ AddComponentPostInit("locomotor", function(self)
     end
 end)
 
+--================================================================================================================
 --[[ 给力量值组件加一个参数,该参数可以锁定沃尔夫冈的力量值 ]]
+--================================================================================================================
 local function LockingMightiness(self)
     self.furry_locked = false
 
@@ -171,3 +180,23 @@ local function LockingMightiness(self)
     end
 end
 AddComponentPostInit("mightiness", LockingMightiness)
+
+--================================================================================================================
+--[[ 修改阿比盖尔的 UpdateDamage 函数,使其在有本mod标签时,默认伤害有60点 ]]
+--================================================================================================================
+AddPrefabPostInit("abigail", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+
+    local old_UpdateDamage = inst.UpdateDamage
+    local function UpdateDamage(inst)
+        old_UpdateDamage(inst)
+        if inst:HasTag("furry_banana_milk_pudding") then
+            inst.components.combat.defaultdamage = 60
+        end
+    end
+    inst.UpdateDamage = UpdateDamage
+    inst:WatchWorldState("phase", UpdateDamage)
+    UpdateDamage(inst)
+end)
