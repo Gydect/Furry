@@ -235,22 +235,6 @@ local foods = {
         floater = { "med", nil, 0.55 },
         card_def = { ingredients = { { "froglegs", 2 }, { "garlic", 1 }, { "furry_wolf_milk", 1 } } },
     },
-    -- 劣质黄油
-    furry_butter = {
-        test = function(cooker, names, tags)
-            return names.furry_wolf_milk == 4
-        end,
-        priority = 20,
-        weight = 1,
-        foodtype = TUNING_FURRY.BUTTER.FOODTYPE,
-        health = TUNING_FURRY.BUTTER.HEALTH,
-        hunger = TUNING_FURRY.BUTTER.HUNGER,
-        perishtime = TUNING_FURRY.BUTTER.PERISH,
-        sanity = TUNING_FURRY.BUTTER.SANITY,
-        cooktime = TUNING_FURRY.BUTTER.COOKTIME,
-        floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "furry_wolf_milk", 4 } } },
-    },
     -- 棉花糖
     furry_marshmallow = {
         test = function(cooker, names, tags)

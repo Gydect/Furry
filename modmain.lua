@@ -18,6 +18,7 @@ PrefabFiles = {
     "furry_collar_bell",           -- 铃铛
     "buff_furry_tiramisu",         -- 提拉米苏buff(临时)
     "buff_furry_jasmine_milk_tea", -- 茉莉奶绿buff(临时)
+    "furry_butter",                -- 劣质黄油
 }
 
 Assets = {

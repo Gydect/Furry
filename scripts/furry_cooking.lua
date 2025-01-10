@@ -10,6 +10,14 @@ for k, recipe in pairs(foods) do
     end
 end
 
+-- 非料理可烹饪得到物品
+local nonfoods = require("furry_preparednonfoods")
+for k, recipe in pairs(nonfoods) do
+    AddCookerRecipe("cookpot", recipe, true)
+    AddCookerRecipe("portablecookpot", recipe, true)
+    AddCookerRecipe("archive_cookpot", recipe, true)
+end
+
 -- 兼容调味粉
 GenerateSpicedFoods(foods)
 local spicedfoods = require("spicedfoods")
