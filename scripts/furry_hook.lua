@@ -81,6 +81,32 @@ if _G.FURRY_SETS.ENABLEDMODS["legion"] then
 end
 
 --================================================================================================================
+--[[ 高清256*256贴图兼容食趣的冰柜 ]]
+--================================================================================================================
+local function Furry_ItemGet_chest_for_tastefun(inst, data)
+    if data and data.slot then
+        Furry_SetShowSlot(inst, data.slot)
+    end
+end
+local function HookBeverageCabinet(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+    local old_onclosefn = inst.components.container.onclosefn
+    local function OnClose_chest(inst)
+        old_onclosefn(inst)
+        for i = 1, 9, 1 do
+            Furry_SetShowSlot(inst, i)
+        end
+    end
+    inst.components.container.onclosefn = OnClose_chest
+    inst:ListenForEvent("itemget", Furry_ItemGet_chest_for_tastefun)
+end
+if _G.FURRY_SETS.ENABLEDMODS["tastefun"] then
+    AddPrefabPostInit("tf_beverage_cabinet", HookBeverageCabinet)
+end
+
+--================================================================================================================
 --[[ 给部分物品添加可以交易的组件，使其可以给予铃铛 ]]
 --================================================================================================================
 local function AddTradableToPrefab(prefab_name)

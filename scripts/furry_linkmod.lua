@@ -21,3 +21,4 @@ local function IsModEnable(name)
 end
 
 _G.FURRY_SETS.ENABLEDMODS["legion"] = IsModEnable("Legion") or IsModEnable("棱镜") -- 棱镜
+_G.FURRY_SETS.ENABLEDMODS["tastefun"] = IsModEnable("TasteFun") or IsModEnable("食趣") -- 食趣
