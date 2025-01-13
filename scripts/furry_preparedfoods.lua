@@ -433,6 +433,27 @@ local foods = {
             end
         end
     },
+    -- 法式波士顿龙虾
+    furry_french_boston_lobster = {
+        test = function(cooker, names, tags)
+            return (names.wobster_sheller_land or names.wobster_sheller_dead) and names.furry_wolf_milk == 2 and Cooked(names, "garlic")
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.FRENCH_BOSTON_LOBSTER.FOODTYPE,
+        health = TUNING_FURRY.FRENCH_BOSTON_LOBSTER.HEALTH,
+        hunger = TUNING_FURRY.FRENCH_BOSTON_LOBSTER.HUNGER,
+        perishtime = TUNING_FURRY.FRENCH_BOSTON_LOBSTER.PERISH,
+        sanity = TUNING_FURRY.FRENCH_BOSTON_LOBSTER.SANITY,
+        cooktime = TUNING_FURRY.FRENCH_BOSTON_LOBSTER.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "wobster_sheller_land", 1 }, { "furry_wolf_milk", 2 }, { "garlic", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "waxwell" then
+                eater:AddDebuff("buff_" .. inst.prefab, "buff_" .. inst.prefab)
+            end
+        end
+    },
 }
 
 for k, v in pairs(foods) do

@@ -226,3 +226,47 @@ AddPrefabPostInit("abigail", function(inst)
     inst:WatchWorldState("phase", UpdateDamage)
     UpdateDamage(inst)
 end)
+
+--================================================================================================================
+--[[ 修改影怪的索敌逻辑,对有法式波士顿龙虾buff的角色保持中立 ]]
+--================================================================================================================
+local shadowcreatures = { "terrorbeak", "crawlinghorror", "oceanhorror", "dreadeye", "crawlingnightmare", "nightmarebeak" }
+local function DelayInitShadowCreature(inst)
+    if not TheWorld.ismastersim then
+        return inst
+    end
+
+    if inst.components.combat then
+        local FurryCanTarget = inst.components.combat.CanTarget
+        function inst.components.combat:CanTarget(target, ...)
+            if target and target:HasDebuff("buff_furry_french_boston_lobster") then
+                return
+            end
+            return FurryCanTarget(self, target, ...)
+        end
+
+        local FurrySetTarget = inst.components.combat.SetTarget
+        function inst.components.combat:SetTarget(target, ...)
+            if target and target:HasDebuff("buff_furry_french_boston_lobster") then
+                return false
+            end
+            return FurrySetTarget(self, target, ...)
+        end
+    end
+end
+for k, v in ipairs(shadowcreatures) do
+    AddPrefabPostInit(v, DelayInitShadowCreature)
+end
+--修改暗影小人攻速
+local function NewState(inst)
+    local leader = inst.components.follower and inst.components.follower.leader
+    if leader and leader:HasDebuff("buff_furry_french_boston_lobster") and inst.sg:HasStateTag("attack") then
+        inst.components.combat:SetAttackPeriod(0.5)
+    end
+end
+AddPrefabPostInit("shadowprotector", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+    inst:ListenForEvent("newstate", NewState)
+end)

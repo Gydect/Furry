@@ -381,7 +381,7 @@ local buffs = {
     },
     {
         --火鸡盛宴buff
-        name = "furry_pomegranate_velvet",
+        name = "furry_turkey_feast",
         onattachedfn = function(inst, target)
             --    力量加成0.25
             if target.components.combat then
@@ -408,10 +408,20 @@ local buffs = {
         end,
         duration = 180
     },
+    {
+        --法式波士顿龙虾buff
+        name = "furry_french_boston_lobster",
+        onattachedfn = function(inst, target)
+        end,
+        ondetachedfn = function(inst, target)
+        end,
+        duration = 480
+    },
 }
 local ret = {}
 for k, v in pairs(buffs) do
     table.insert(ret, MakeBuff(v.name, v.onattachedfn, v.onextendedfn, v.ondetachedfn, v.duration))
 end
 
+---@diagnostic disable-next-line: deprecated
 return unpack(ret)
