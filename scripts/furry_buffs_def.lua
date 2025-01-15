@@ -33,6 +33,22 @@ local function taser_onblockedorattacked(wx, data, inst)
     end
 end
 
+local function herbal_tea_read(wicker, data)
+    local book = data.book
+    if data.success == true then
+        if book.prefab == "book_tentacles" or book.prefab == "book_birds" or book.prefab == "book_bees"
+            or book.prefab == "book_horticulture" or book.prefab == "book_horticulture_upgraded"
+            or book.prefab == "book_brimstone" then
+            if book.components.book.onread ~= nil then
+                book.components.book.onread(book, wicker)
+            end
+        else
+            return
+        end
+        wicker:RemoveDebuff("buff_furry_herbal_tea", "buff_furry_herbal_tea")
+    end
+end
+
 --================
 --[[ buff列表 ]]
 --================
@@ -116,6 +132,7 @@ local furry_buffs = {
         end,
         duration = 720,
     },
+
     -- 香蕉冻奶布丁
     furry_banana_milk_pudding = {
         name = "furry_banana_milk_pudding",
@@ -157,6 +174,7 @@ local furry_buffs = {
         end,
         duration = 480,
     },
+
     -- 酥麻蝴蝶派
     furry_crispy_butterfly_pie = {
         name = "furry_crispy_butterfly_pie",
@@ -226,6 +244,17 @@ local furry_buffs = {
             end
         end,
         duration = 480,
+    },
+
+    -- 提神花草茶
+    furry_herbal_tea = {
+        name = "furry_herbal_tea",
+        onattachedfn = function(inst, target)
+            target:ListenForEvent("furry_read", herbal_tea_read)
+        end,
+        ondetachedfn = function(inst, target)
+            target:RemoveEventCallback("furry_read", herbal_tea_read)
+        end,
     },
 }
 

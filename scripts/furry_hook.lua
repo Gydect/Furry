@@ -270,3 +270,16 @@ AddPrefabPostInit("shadowprotector", function(inst)
     end
     inst:ListenForEvent("newstate", NewState)
 end)
+
+--================================================================================================================
+--[[ 给读书组件book的OnRead函数添加一个推送事件,服务提神花草茶buff ]]
+--================================================================================================================
+local function FurryHookBook(self)
+    local OldOnRead = self.OnRead
+    self.OnRead = function(self, reader)
+        local success, reason = OldOnRead(self, reader)
+        reader:PushEvent("furry_read", { book = self.inst, success = success })
+        return success, reason
+    end
+end
+AddComponentPostInit("book", FurryHookBook)

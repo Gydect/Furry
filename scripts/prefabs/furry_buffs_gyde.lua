@@ -18,8 +18,10 @@ local function MakeBuff(name, data)
     end
 
     local function OnExtended(inst, target)
-        inst.components.timer:StopTimer("buffover")
-        inst.components.timer:StartTimer("buffover", data.duration)
+        if data.duration then
+            inst.components.timer:StopTimer("buffover")
+            inst.components.timer:StartTimer("buffover", data.duration)
+        end
 
         if data.onextendedfn ~= nil then
             data.onextendedfn(inst, target)
@@ -59,7 +61,9 @@ local function MakeBuff(name, data)
         inst.components.debuff.keepondespawn = true
 
         inst:AddComponent("timer")
-        inst.components.timer:StartTimer("buffover", data.duration)
+        if data.duration then
+            inst.components.timer:StartTimer("buffover", data.duration)
+        end
         inst:ListenForEvent("timerdone", OnTimerDone)
 
         return inst

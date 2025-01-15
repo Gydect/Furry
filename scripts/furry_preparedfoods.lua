@@ -125,6 +125,27 @@ local foods = {
             end
         end
     },
+    -- 提神花草茶
+    furry_herbal_tea = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk and tags.sweetener and tags.frozen and names.forgetmelots
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.HERBAL_TEA.FOODTYPE,
+        health = TUNING_FURRY.HERBAL_TEA.HEALTH,
+        hunger = TUNING_FURRY.HERBAL_TEA.HUNGER,
+        perishtime = TUNING_FURRY.HERBAL_TEA.PERISH,
+        sanity = TUNING_FURRY.HERBAL_TEA.SANITY,
+        cooktime = TUNING_FURRY.HERBAL_TEA.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "honey", 1 }, { "ice", 1 }, { "forgetmelots", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wickerbottom" then
+                eater:AddDebuff("buff_furry_herbal_tea", "buff_furry_herbal_tea")
+            end
+        end
+    },
     -- 咖喱蛋包饭
     furry_curry_omelet_rice = {
         -- 配方
