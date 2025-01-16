@@ -83,11 +83,6 @@ end
 --================================================================================================================
 --[[ 高清256*256贴图兼容食趣的冰柜 ]]
 --================================================================================================================
-local function Furry_ItemGet_chest_for_tastefun(inst, data)
-    if data and data.slot then
-        Furry_SetShowSlot(inst, data.slot)
-    end
-end
 local function HookBeverageCabinet(inst)
     if not TheWorld.ismastersim then
         return
@@ -100,7 +95,7 @@ local function HookBeverageCabinet(inst)
         end
     end
     inst.components.container.onclosefn = OnClose_chest
-    inst:ListenForEvent("itemget", Furry_ItemGet_chest_for_tastefun)
+    inst:ListenForEvent("itemget", Furry_ItemGet_chest)
 end
 if _G.FURRY_SETS.ENABLEDMODS["tastefun"] then
     AddPrefabPostInit("tf_beverage_cabinet", HookBeverageCabinet)
@@ -283,3 +278,125 @@ local function FurryHookBook(self)
     end
 end
 AddComponentPostInit("book", FurryHookBook)
+
+--================================================================================================================
+--[[ hook各种书籍,使其在有提神花草茶buff时,阅读后实现不一样的效果,真是个蠢办法 ]]
+--================================================================================================================
+
+--[[ 月之魔典阅读之后,当天月相变新月 ]]
+AddPrefabPostInit("book_moon", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+
+    local old_onread = inst.components.book.onread
+    inst.components.book.onread = function(inst, reader)
+        if reader:HasDebuff("buff_furry_herbal_tea") then
+            if TheWorld:HasTag("cave") then
+                return false, "NOMOONINCAVES"
+            elseif TheWorld.state.moonphase == "new" then
+                return false, "ALREADYFULLMOON"
+            end
+
+            TheWorld:PushEvent("ms_setmoonphase", { moonphase = "new", iswaxing = true })
+
+            if not TheWorld.state.isnight then
+                reader.components.talker:Say(GetString(reader, "ANNOUNCE_BOOK_MOON_DAYTIME"))
+            end
+
+            reader:RemoveDebuff("buff_furry_herbal_tea")
+            return true
+        else
+            return old_onread(inst, reader)
+        end
+    end
+end)
+
+--[[ 永恒之光和永恒之光复兴,阅读之后,天光时间翻倍 ]]
+AddPrefabPostInit("book_light", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+
+    local old_onread = inst.components.book.onread
+    inst.components.book.onread = function(inst, reader)
+        if reader:HasDebuff("buff_furry_herbal_tea") then
+            TheWorld:PushEvent("ms_forcequake")
+            local x, y, z = reader.Transform:GetWorldPosition()
+            local light = SpawnPrefab("booklight")
+            light.Transform:SetPosition(x, y, z)
+
+            light:SetDuration(TUNING.TOTAL_DAY_TIME)
+
+            reader:RemoveDebuff("buff_furry_herbal_tea")
+            return true
+        else
+            return old_onread(inst, reader)
+        end
+    end
+end)
+AddPrefabPostInit("book_light_upgraded", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+
+    local old_onread = inst.components.book.onread
+    inst.components.book.onread = function(inst, reader)
+        if reader:HasDebuff("buff_furry_herbal_tea") then
+            TheWorld:PushEvent("ms_forcequake")
+            local x, y, z = reader.Transform:GetWorldPosition()
+            local light = SpawnPrefab("booklight")
+            light.Transform:SetPosition(x, y, z)
+
+            -- TODO: is 2 days too much?(哈哈哈,官方码师的质问:两天很多吗?)
+            light:SetDuration(TUNING.TOTAL_DAY_TIME * 4)
+            reader:RemoveDebuff("buff_furry_herbal_tea")
+            return true
+        else
+            return old_onread(inst, reader)
+        end
+    end
+end)
+
+--[[ 控温学可以保持恒温3分钟 ]]
+AddPrefabPostInit("book_temperature", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+
+    local old_onread = inst.components.book.onread
+    inst.components.book.onread = function(inst, reader)
+        if reader:HasDebuff("buff_furry_herbal_tea") then
+            local x, y, z = reader.Transform:GetWorldPosition()
+            local players = FindPlayersInRange(x, y, z, TUNING.BOOK_TEMPERATURE_RADIUS, true)
+
+            for _, player in pairs(players) do
+                player.components.temperature:SetTemperature(TUNING.BOOK_TEMPERATURE_AMOUNT)
+                player.components.moisture:SetMoistureLevel(0)
+                player:AddDebuff("buff_furry_constant_temperature", "buff_furry_constant_temperature")
+
+                local fx = SpawnPrefab(player.components.rider ~= nil and player.components.rider:IsRiding() and "fx_book_temperature_mount" or "fx_book_temperature")
+                fx.Transform:SetPosition(player.Transform:GetWorldPosition())
+                fx.Transform:SetRotation(player.Transform:GetRotation())
+
+                local items = player.components.inventory:ReferenceAllItems()
+                for _, item in ipairs(items) do
+                    if item.components.inventoryitem ~= nil then
+                        item.components.inventoryitem:DryMoisture()
+                    end
+                end
+            end
+
+            local frozens = TheSim:FindEntities(x, y, z, TUNING.BOOK_TEMPERATURE_RADIUS, { "freezable" }, { "INLIMBO", "frozen" })
+            for _, frozen in ipairs(frozens) do
+                if frozen.components.freezable then -- Just in case.
+                    frozen.components.freezable:Unfreeze()
+                end
+            end
+
+            return true
+        else
+            return old_onread(inst, reader)
+        end
+    end
+end)

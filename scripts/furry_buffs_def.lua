@@ -45,7 +45,7 @@ local function herbal_tea_read(wicker, data)
         else
             return
         end
-        wicker:RemoveDebuff("buff_furry_herbal_tea", "buff_furry_herbal_tea")
+        wicker:RemoveDebuff("buff_furry_herbal_tea")
     end
 end
 
@@ -255,6 +255,30 @@ local furry_buffs = {
         ondetachedfn = function(inst, target)
             target:RemoveEventCallback("furry_read", herbal_tea_read)
         end,
+    },
+
+    --恒温
+    furry_constant_temperature = {
+        name = "furry_constant_temperature",
+        onattachedfn = function(inst, target)
+            if target.components.temperature then
+                inst.task = inst:DoPeriodicTask(0, function()
+                    local current = target.components.temperature:GetCurrent()
+                    if current < 30 then
+                        target.components.temperature:SetTemperature(35)
+                    elseif current > 40 then
+                        target.components.temperature:SetTemperature(35)
+                    end
+                end, nil, target)
+            end
+        end,
+        ondetachedfn = function(inst, target)
+            if inst.task ~= nil then
+                inst.task:Cancel()
+                inst.task = nil
+            end
+        end,
+        duration = 180,
     },
 }
 
