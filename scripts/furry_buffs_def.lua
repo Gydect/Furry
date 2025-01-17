@@ -1,3 +1,4 @@
+local FURRY_TOOL = require("furry_tool")
 --==============================
 --[[ 酥麻蝴蝶派buff相关函数 ]]
 --==============================
@@ -33,6 +34,9 @@ local function taser_onblockedorattacked(wx, data, inst)
     end
 end
 
+--==============================
+--[[ 提神花草茶buff相关函数 ]]
+--==============================
 local function herbal_tea_read(wicker, data)
     local book = data.book
     if data.success == true then
@@ -46,6 +50,46 @@ local function herbal_tea_read(wicker, data)
             return
         end
         wicker:RemoveDebuff("buff_furry_herbal_tea")
+    end
+end
+
+--==============================
+--[[ 可乐鸡翅buff相关函数 ]]
+--==============================
+local function IsLifeDrainable(target)
+    return not target:HasAnyTag(NON_LIFEFORM_TARGET_TAGS) or target:HasTag("lifedrainable")
+end
+
+local function cola_chicken_wings(owner, data)
+    -- 生命吸取
+    if data ~= nil and data.damageresolved ~= nil and data.damageresolved > 0 then
+        local health_steal_value = data.damageresolved * 0.03
+        if owner.components.health and owner.components.health:IsHurt() and IsLifeDrainable(data.target) then
+            owner.components.health:DoDelta(health_steal_value, false, "buff_furry_cola_chicken_wings")
+        end
+    end
+
+    -- 范围伤害
+    -- 根据有无启用PvP,排除玩家标签
+    local target = data.target
+    if target == nil or data.weapon == nil then
+        return
+    end
+    local friendlyTags = FURRY_TOOL.TagsFriendly(TheNet:GetPVPEnabled() and {} or { "player" })
+    local x, y, z = target.Transform:GetWorldPosition()
+
+    -- 查找范围4加上物理半径内的所有实体，排除友好单位
+    local entities = TheSim:FindEntities(x, y, z, 4, nil, friendlyTags)
+    for _, entity in ipairs(entities) do
+        if entity ~= owner and entity ~= target and entity.components.combat then
+            entity.components.combat:GetAttacked(data.weapon or target, 30)
+            if entity.components.health and entity.components.health:IsDead() then
+                owner:PushEvent("killed", { victim = entity, attacker = owner })
+                if entity.components.combat.onkilledbyother ~= nil then
+                    entity.components.combat.onkilledbyother(entity, owner)
+                end
+            end
+        end
     end
 end
 
@@ -277,6 +321,36 @@ local furry_buffs = {
                 inst.task:Cancel()
                 inst.task = nil
             end
+        end,
+        duration = 180,
+    },
+
+    -- 可乐鸡翅
+    furry_cola_chicken_wings = {
+        name = "furry_cola_chicken_wings",
+        onattachedfn = function(inst, target)
+            target:ListenForEvent("onhitother", cola_chicken_wings)
+        end,
+        ondetachedfn = function(inst, target)
+            target:RemoveEventCallback("onhitother", cola_chicken_wings)
+        end,
+        duration = 180,
+    },
+
+    -- 奶油水果派
+    furry_creamy_fruit_pie = {
+        name = "furry_creamy_fruit_pie",
+        onattachedfn = function(inst, target)
+            if target.components.locomotor then
+                target.components.locomotor:SetExternalSpeedMultiplier(inst, "furry_creamy_fruit_pie", 1.5)
+            end
+            target:AddTag("notarget")
+        end,
+        ondetachedfn = function(inst, target)
+            if target.components.locomotor then
+                target.components.locomotor:RemoveExternalSpeedMultiplier(inst, "furry_creamy_fruit_pie")
+            end
+            target:RemoveTag("notarget")
         end,
         duration = 180,
     },

@@ -146,6 +146,49 @@ local foods = {
             end
         end
     },
+    -- 可乐鸡翅
+    furry_cola_chicken_wings = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk and tags.sweetener
+                and (names.batwing == 2 or names.batwing_cooked == 2 or (names.batwing and names.batwing_cooked))
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.COLA_CHICKEN_WINGS.FOODTYPE,
+        health = TUNING_FURRY.COLA_CHICKEN_WINGS.HEALTH,
+        hunger = TUNING_FURRY.COLA_CHICKEN_WINGS.HUNGER,
+        perishtime = TUNING_FURRY.COLA_CHICKEN_WINGS.PERISH,
+        sanity = TUNING_FURRY.COLA_CHICKEN_WINGS.SANITY,
+        cooktime = TUNING_FURRY.COLA_CHICKEN_WINGS.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "honey", 1 }, { "batwing", 2 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "woodie" then
+                eater:AddDebuff("buff_furry_cola_chicken_wings", "buff_furry_cola_chicken_wings")
+            end
+        end
+    },
+    -- 奶油水果派
+    furry_creamy_fruit_pie = {
+        test = function(cooker, names, tags)
+            return names.furry_wolf_milk and tags.sweetener and tags.fruit and tags.fat
+        end,
+        priority = 20,
+        weight = 1,
+        foodtype = TUNING_FURRY.CREAMY_FRUIT_PIE.FOODTYPE,
+        health = TUNING_FURRY.CREAMY_FRUIT_PIE.HEALTH,
+        hunger = TUNING_FURRY.CREAMY_FRUIT_PIE.HUNGER,
+        perishtime = TUNING_FURRY.CREAMY_FRUIT_PIE.PERISH,
+        sanity = TUNING_FURRY.CREAMY_FRUIT_PIE.SANITY,
+        cooktime = TUNING_FURRY.CREAMY_FRUIT_PIE.COOKTIME,
+        floater = { "med", nil, 0.55 },
+        card_def = { ingredients = { { "furry_wolf_milk", 1 }, { "honey", 1 }, { "berries", 1 }, { "butter", 1 } } },
+        oneatenfn = function(inst, eater)
+            if eater and eater.prefab == "wes" then
+                eater:AddDebuff("buff_furry_creamy_fruit_pie", "buff_furry_creamy_fruit_pie")
+            end
+        end
+    },
     -- 咖喱蛋包饭
     furry_curry_omelet_rice = {
         -- 配方

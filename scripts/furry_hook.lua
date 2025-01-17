@@ -394,6 +394,7 @@ AddPrefabPostInit("book_temperature", function(inst)
                 end
             end
 
+            reader:RemoveDebuff("buff_furry_herbal_tea")
             return true
         else
             return old_onread(inst, reader)

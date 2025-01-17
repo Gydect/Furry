@@ -1,4 +1,5 @@
 FURRY_TOOL = {
+    -- 注册贴图集
     Tool_RegisterInventoryItemAtlas = function(atlas_path)
         local atlas = resolvefilepath(atlas_path)
 
@@ -20,3 +21,27 @@ FURRY_TOOL = {
         end
     end
 }
+
+-- 一个合并函数
+local function CombineTags(tags1, tags2)
+    if tags2 ~= nil then
+        for _, v in pairs(tags2) do
+            table.insert(tags1, v)
+        end
+    end
+    return tags1
+end
+-- 建筑与伙伴标签,代码作者:梧桐
+local function TagsFriendly(othertags)
+    return CombineTags({
+        "INLIMBO", "NOCLICK", "notarget", "noattack", "playerghost", --"invisible"
+        "wall", "structure", "balloon",
+        "companion", "glommer", "friendlyfruitfly", "abigail", "shadowminion"
+    }, othertags)
+end
+
+local Furry_Fns = {
+    TagsFriendly = TagsFriendly,
+}
+
+return Furry_Fns
