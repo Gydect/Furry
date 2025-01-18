@@ -46,6 +46,8 @@ local function herbal_tea_read(wicker, data)
             if book.components.book.onread ~= nil then
                 book.components.book.onread(book, wicker)
             end
+        elseif book.prefab == "book_research_station" then
+            wicker:RemoveDebuff("buff_furry_herbal_tea")
         else
             return
         end

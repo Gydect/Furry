@@ -416,7 +416,8 @@ local foods = {
     -- 奶油蛤蜊炖蛋
     furry_creamy_clam_egg_stew = {
         test = function(cooker, names, tags)
-            return Cooked(names, "barnacle") == 2 and names.furry_wolf_milk and Cooked(names, "bird_egg")
+            return names.furry_wolf_milk and tags.egg
+                and (names.barnacle == 2 or names.barnacle_cooked == 2 or (names.barnacle and names.barnacle_cooked))
         end,
         priority = 20,
         weight = 1,
@@ -479,7 +480,8 @@ local foods = {
     --火鸡盛宴
     furry_turkey_feast = {
         test = function(cooker, names, tags)
-            return Cooked(names, "drumstick") == 2 and names.furry_wolf_milk == 1 and Cooked(names, "meat")
+            return names.furry_wolf_milk == 1 and tags.meat
+                and (names.drumstick == 2 or names.drumstick_cooked == 2 or (names.drumstick and names.drumstick_cooked))
         end,
         priority = 20,
         weight = 1,
@@ -500,7 +502,8 @@ local foods = {
     -- 法式波士顿龙虾
     furry_french_boston_lobster = {
         test = function(cooker, names, tags)
-            return (names.wobster_sheller_land or names.wobster_sheller_dead) and names.furry_wolf_milk == 2 and Cooked(names, "garlic")
+            return (names.wobster_sheller_land or names.wobster_sheller_dead) and names.furry_wolf_milk == 2
+                and (names.garlic == 2 or names.garlic_cooked == 2 or (names.garlic and names.garlic_cooked))
         end,
         priority = 20,
         weight = 1,

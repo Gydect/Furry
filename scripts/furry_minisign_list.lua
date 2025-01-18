@@ -24,6 +24,8 @@ local InventoryPrefabsList = { --每个元素的下标值为每种物品栏图�
     furry_turkey_feast              = 1,
     furry_herbal_tea                = 1,
     furry_french_boston_lobster     = 1,
+    furry_cola_chicken_wings        = 1,
+    furry_creamy_fruit_pie          = 1,
 }
 
 return InventoryPrefabsList
