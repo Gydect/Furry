@@ -156,6 +156,56 @@ local function spider_update(inst)
     end
 end
 
+---共享食物的三维效果
+local function ShareFood(player, food)
+    local eater = player.components.eater
+    local stack_mult = eater.eatwholestack and food.components.stackable ~= nil and food.components.stackable:StackSize() or 1
+
+    local health_delta = 0
+    local hunger_delta = 0
+    local sanity_delta = 0
+
+    if player.components.health ~= nil and
+        (food.components.edible.healthvalue >= 0 or eater:DoFoodEffects(food)) then
+        health_delta = food.components.edible:GetHealth(player) * eater.healthabsorption
+    end
+
+    if player.components.hunger ~= nil then
+        hunger_delta = food.components.edible:GetHunger(player) * eater.hungerabsorption
+    end
+
+    if player.components.sanity ~= nil and
+        (food.components.edible.sanityvalue >= 0 or eater:DoFoodEffects(food)) then
+        sanity_delta = food.components.edible:GetSanity(player) * eater.sanityabsorption
+    end
+
+    if health_delta ~= 0 then
+        player.components.health:DoDelta(health_delta * stack_mult, nil, food.prefab)
+    end
+    if hunger_delta ~= 0 then
+        player.components.hunger:DoDelta(hunger_delta * stack_mult)
+    end
+    if sanity_delta ~= 0 then
+        player.components.sanity:DoDelta(sanity_delta * stack_mult)
+    end
+end
+
+local function OnEat(inst, data)
+    local food = data.food
+    for i, v in ipairs(AllPlayers) do
+        if v ~= inst then
+            local x, y, z = inst.Transform:GetWorldPosition()
+            local dist = v:GetDistanceSqToPoint(x, y, z)
+            if dist <= 4 * 4 then
+                if food and food.components.edible ~= nil then
+                    ShareFood(v, food)
+                    food.components.edible:OnEaten(v)
+                end
+            end
+        end
+    end
+end
+
 --buff列表
 local buffs = {
     {
@@ -310,6 +360,8 @@ local buffs = {
         --奶油蛤蜊炖蛋buff
         name = "furry_creamy_clam_egg_stew",
         onattachedfn = function(inst, target)
+            --共享食物效果
+            target:ListenForEvent("oneat", OnEat)
             --食用同种料理无惩罚
             if target.components.foodmemory and not target.FurryOldRememberFood then
                 target.FurryOldRememberFood = target.components.foodmemory.RememberFood
@@ -322,6 +374,7 @@ local buffs = {
             end
         end,
         ondetachedfn = function(inst, target)
+            target:RemoveEventCallback("oneat", OnEat)
         end,
         duration = 360
     },
