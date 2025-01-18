@@ -401,3 +401,26 @@ AddPrefabPostInit("book_temperature", function(inst)
         end
     end
 end)
+
+--[[ 万物百科阅读之后,可解锁其他科技台物品 ]]
+AddPrefabPostInit("book_research_station", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+    local old_onread = inst.components.book.onread
+    inst.components.book.onread = function(inst, reader)
+        local result = old_onread(inst, reader)
+        if reader:HasDebuff("buff_furry_herbal_tea") and reader.components.builder then
+            if reader.onfurryitembuild == nil then
+                reader.components.builder.furryfreebuildmode = true
+                reader.onfurryitembuild = function()
+                    reader.components.builder.furryfreebuildmode = false
+                    reader:RemoveEventCallback("consumeingredients", reader.onfurryitembuild)
+                    reader.onfurryitembuild = nil
+                end
+                reader:ListenForEvent("consumeingredients", reader.onfurryitembuild)
+            end
+        end
+        return result
+    end
+end)
