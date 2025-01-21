@@ -1,7 +1,7 @@
 AddRecipePostInitAny(function(recipe)
     if recipe.canbuild ~= nil then
         recipe.FurryCanbuild = recipe.canbuild
-        --修改配方的canbuild函数
+        -- 修改配方的canbuild函数
         function recipe:canbuild(inst, ...)
             local success, msg = recipe:FurryCanbuild(self, inst, ...)
             if not success and inst.components.builder and inst.components.builder.furryfreebuildmode then

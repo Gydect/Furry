@@ -11,14 +11,14 @@ end
 
 local function WorToxPrefabFiles(inst)
     inst.FurryCanSoulhop = inst.CanSoulhop
-    --客户端玩家身上灵魂数量判断是否可以进行灵魂跳跃
+    -- 客户端玩家身上灵魂数量判断是否可以进行灵魂跳跃
     inst.CanSoulhop = CanSoulhop
-    --客户端监听是否有buff，简单点的话，就直接用标签代替也可以
+    -- 客户端监听是否有buff，简单点的话，就直接用标签代替也可以
     inst._furry_nut_energy_bar = net_bool(inst.GUID, "wortox.furry_nut_energy_bar", "furry_nut_energy_bar")
     if not TheWorld.ismastersim then
         return inst
     end
-    --红石榴丝绒千层灵魂回血翻倍
+    -- 红石榴丝绒千层灵魂回血翻倍
     local OldDoDelta = inst.components.health.DoDelta
     function inst.components.health:DoDelta(amount, overtime, cause, ...)
         if inst:HasDebuff("buff_furry_pomegranate_velvet") and cause == "wortox_soul" then
@@ -29,7 +29,7 @@ local function WorToxPrefabFiles(inst)
 end
 AddPrefabPostInit("wortox", WorToxPrefabFiles)
 
---地图跳跃
+-- 地图跳跃
 local Old_ACTIONS_MAP_REMAP = ACTIONS_MAP_REMAP[ACTIONS.BLINK.code]
 ACTIONS_MAP_REMAP[ACTIONS.BLINK.code] = function(act, ...)
     local doer = act.doer

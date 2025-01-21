@@ -252,7 +252,7 @@ end
 for k, v in ipairs(shadowcreatures) do
     AddPrefabPostInit(v, DelayInitShadowCreature)
 end
---修改暗影小人攻速
+-- 修改暗影小人攻速
 local function NewState(inst)
     local leader = inst.components.follower and inst.components.follower.leader
     if leader and leader:HasDebuff("buff_furry_french_boston_lobster") and inst.sg:HasStateTag("attack") then
