@@ -424,3 +424,47 @@ AddPrefabPostInit("book_research_station", function(inst)
         return result
     end
 end)
+
+--================================================================================================================
+--[[ 修改官方的动作,此处代码参考了能力勋章mod,感谢恒子,前人栽树后人乘凉 ]]
+--================================================================================================================
+local actions_status, actions_data = pcall(require, "furry_actions")
+if actions_status then
+    -- 修改老动作
+    if actions_data.old_actions then
+        for _, act in pairs(actions_data.old_actions) do
+            if act.switch then
+                local action = GLOBAL.ACTIONS[act.id]
+                if act.actiondata then
+                    for k, data in pairs(act.actiondata) do
+                        action[k] = data
+                    end
+                end
+                if act.state then
+                    local testfn = act.state.testfn
+                    AddStategraphPostInit("wilson", function(sg)
+                        local old_handler = sg.actionhandlers[action].deststate
+                        sg.actionhandlers[action].deststate = function(inst, action)
+                            if testfn and testfn(inst, action) and act.state.deststate then
+                                return act.state.deststate(inst, action)
+                            end
+                            return old_handler(inst, action)
+                        end
+                    end)
+                    if act.state.client_testfn then
+                        testfn = act.state.client_testfn
+                    end
+                    AddStategraphPostInit("wilson_client", function(sg)
+                        local old_handler = sg.actionhandlers[action].deststate
+                        sg.actionhandlers[action].deststate = function(inst, action)
+                            if testfn and testfn(inst, action) and act.state.deststate then
+                                return act.state.deststate(inst, action)
+                            end
+                            return old_handler(inst, action)
+                        end
+                    end)
+                end
+            end
+        end
+    end
+end

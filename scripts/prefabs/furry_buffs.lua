@@ -276,9 +276,11 @@ local buffs = {
         onattachedfn = function(inst, target)
             -- 监听onattackother，给投射物加上位面伤害
             inst:ListenForEvent("onattackother", NutEnergyBarOnAttack, target)
+            target:AddTag("furry_nut_energy_bar")
         end,
         ondetachedfn = function(inst, target)
             inst:RemoveEventCallback("onattackother", NutEnergyBarOnAttack, target)
+            target:RemoveTag("furry_nut_energy_bar")
         end,
         duration = 180
     },
