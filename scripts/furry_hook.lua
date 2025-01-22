@@ -402,6 +402,25 @@ AddPrefabPostInit("book_temperature", function(inst)
     end
 end)
 
+--[[ 克服蛛形纲恐惧症阅读之后,蛛网面积x2,减速范围x2 ]]
+AddPrefabPostInit("book_web", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+    local old_onread = inst.components.book.onread
+    inst.components.book.onread = function(inst, reader)
+        if reader:HasDebuff("buff_furry_herbal_tea") then
+            local x, y, z = reader.Transform:GetWorldPosition()
+            local ground_web = SpawnPrefab("furry_book_web_ground")
+            ground_web.Transform:SetPosition(x, y, z)
+            reader:RemoveDebuff("buff_furry_herbal_tea")
+            return true
+        else
+            return old_onread(inst, reader)
+        end
+    end
+end)
+
 --[[ 万物百科阅读之后,可解锁其他科技台物品 ]]
 AddPrefabPostInit("book_research_station", function(inst)
     if not TheWorld.ismastersim then
