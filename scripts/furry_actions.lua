@@ -1,4 +1,62 @@
 --=======================================
+--[[ 动作定义 ]]
+--=======================================
+local actions = {
+    CB_ITEMUPGRADE = {
+        id = "CB_ITEMUPGRADE",
+        priority = 6,
+        strfn = function(act)
+            return "GENERIC"
+        end,
+        fn = function(act)
+            if act.target.components.cb_itemupgrade
+                and not act.target.components.cb_itemupgrade:IsMax(act.invobject.prefab)
+            then
+                act.target.components.cb_itemupgrade:AddItem(act.invobject, act.doer)
+                if act.doer.SoundEmitter then
+                    act.doer.SoundEmitter:PlaySound("dontstarve/wilson/equip_item_gold")
+                end
+                return true
+            end
+            return false
+        end
+    },
+}
+
+for _, action in pairs(actions) do
+    local _action = Action()
+    for k, v in pairs(action) do
+        _action[k] = v
+    end
+    AddAction(_action)
+end
+
+STRINGS.ACTIONS.CB_ITEMUPGRADE = {
+    GENERIC = "升级",
+}
+
+--=======================================
+--[[ 动作行为:就是执行动作的人物动画 ]]
+--=======================================
+AddStategraphActionHandler("wilson", ActionHandler(ACTIONS.CB_ITEMUPGRADE, "domediumaction"))
+AddStategraphActionHandler("wilson_client", ActionHandler(ACTIONS.CB_ITEMUPGRADE, "domediumaction"))
+
+--=======================================
+--[[ ADD COMPONENT ACTION ]]
+-- SCENE		using an object in the world                                        --args: inst, doer, actions, right
+-- USEITEM		using an inventory item on an object in the world                   --args: inst, doer, target, actions, right
+-- POINT		using an inventory item on a point in the world                     --args: inst, doer, pos, actions, right, target
+-- EQUIPPED		using an equiped item on yourself or a target object in the world   --args: inst, doer, target, actions, right
+-- INVENTORY	using an inventory item                                             --args: inst, doer, actions, right
+--=======================================
+AddComponentAction("USEITEM", "inventoryitem", function(inst, doer, target, actions, right)
+    if target.components.cb_itemupgrade and not target.components.cb_itemupgrade:IsMax(inst.prefab) then
+        -- 升级
+        table.insert(actions, ACTIONS.CB_ITEMUPGRADE)
+    end
+end)
+
+--=======================================
 --[[ 代码作者:恒子 源:能力勋章mod ]]
 --=======================================
 local old_actions = {
@@ -13,7 +71,7 @@ local old_actions = {
                     return inst:HasTag("furry_nut_energy_bar") and weapon and weapon:HasTag("slingshot")
                 end
             end,
-            --客机动作劫持
+            -- 客机动作劫持
             client_testfn = function(inst, action)
                 if not (inst.sg:HasStateTag("attack") and action.target == inst.sg.statemem.attacktarget or (inst.replica.health and inst.replica.health:IsDead())) then
                     local weapon = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)

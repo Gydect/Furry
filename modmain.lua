@@ -54,6 +54,7 @@ FURRY_TOOL.Tool_RegisterInventoryItemAtlas("images/furry_inventoryimages.xml")
 
 modimport("scripts/furry_cooking.lua")  -- 烹饪
 modimport("scripts/furry_hook.lua")     -- 钩子
+modimport("scripts/furry_actions.lua")  -- 动作
 modimport("scripts/furry_SGwilson.lua") -- 新增人物状态机
 -- 沃托克斯: 红石榴丝绒千层的效果
 modimport("scripts/furry_wortox.lua")

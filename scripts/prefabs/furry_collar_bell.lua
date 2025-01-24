@@ -3,271 +3,195 @@ local assets =
     Asset("ANIM", "anim/furry_collar_bell.zip"),
 }
 
--- 隔热保暖判断
-local function UpdateInsulation(inst)
-    if inst.upgrade_data.eyebrellahat == true and inst.upgrade_data.trunkvest_winter == true then
-        if TheWorld.state.iswinter then
+local ITEMS = {
+    { "deerclops_eyeball", 1 },
+    { "pigskin",           5 },
+    { "lightbulb",         10 },
+    { "horrorfuel",        1 },
+    { "purebrilliance",    1 },
+    { "trunk_winter",      1 },
+    { "tentaclespots",     2 },
+    { "walrus_tusk",       1 },
+}
+
+local function UpdateInsulator(inst)
+    local self = inst.components.cb_itemupgrade
+    if (TheWorld.state.isspring or TheWorld.state.iswinter) then
+        if self:IsMax("trunk_winter") then
+            if not inst.components.insulator then
+                inst:AddComponent("insulator")
+            end
             inst.components.insulator:SetWinter()
-        elseif TheWorld.state.issummer then
-            inst.components.insulator:SetSummer()
+            inst.components.insulator:SetInsulation(240)
+        else
+            inst:RemoveComponent("insulator")
         end
-    elseif inst.upgrade_data.eyebrellahat == true and inst.upgrade_data.trunkvest_winter == false then
-        inst.components.insulator:SetSummer()
-    elseif inst.upgrade_data.eyebrellahat == true and inst.upgrade_data.trunkvest_winter == false then
-        inst.components.insulator:SetWinter()
     else
-        inst.components.insulator:SetInsulation(0)
+        if self:IsMax("deerclops_eyeball") then
+            if not inst.components.insulator then
+                inst:AddComponent("insulator")
+            end
+            inst.components.insulator:SetSummer()
+            inst.components.insulator:SetInsulation(240)
+        else
+            inst:RemoveComponent("insulator")
+        end
+    end
+end
+
+
+local function GetGarnisher(inst)
+    return inst.components.equippable:IsEquipped()
+        and inst.components.inventoryitem.owner
+        or nil
+end
+
+local function SetLight(inst, enable)
+    if enable then
+        local owner = inst.components.inventoryitem.owner
+
+        local light = SpawnPrefab("lanternlight")
+        light.OnEntityWake = nil
+        light.SoundEmitter:KillSound("loop")
+        light.Light:SetIntensity(0.8)
+        light.Light:SetRadius(5)
+        light.Light:SetFalloff(.9)
+        light.entity:SetParent(owner.entity)
+        light:ListenForEvent("onremove", function() light:Remove() end, inst)
+        inst._light = light
+    else
+        if inst._light then
+            inst._light:Remove()
+            inst._light = nil
+        end
+    end
+end
+
+local function OnIsDay(inst, isday)
+    local owner = inst.components.inventoryitem.owner
+    local enable = not isday
+        and owner
+        and inst.components.cb_itemupgrade:IsMax("lightbulb")
+        and not inst.components.fueled:IsEmpty()
+    SetLight(inst, enable)
+end
+
+
+local function OnUpgrade(inst, data, doer)
+    local self = inst.components.cb_itemupgrade
+    if self:IsMax("deerclops_eyeball") and not data.deerclops_eyeball then
+        -- 240隔热
+        UpdateInsulator(inst)
+        data.deerclops_eyeball = true
+    end
+
+    if self:IsMax("pigskin") and not data.pigskin then
+        -- 20％防御
+        local owner = GetGarnisher(inst)
+        if owner and owner.components.combat then
+            owner.components.combat.externaldamagetakenmultipliers:SetModifier(inst, 0.8)
+        end
+        data.pigskin = true
+    end
+
+    if self:IsMax("lightbulb") and not data.lightbulb then
+        -- 范围发光
+        local owner = GetGarnisher(inst)
+        if owner then
+            OnIsDay(inst, TheWorld.state.isday)
+        end
+        data.lightbulb = true
+    end
+
+    -- 位面防御
+    local planardefense = (self:IsMax("horrorfuel") and 5 or 0)
+        + (self:IsMax("purebrilliance") and 5 or 0)
+    if planardefense > 0 then
+        if not inst.components.planardefense then
+            inst:AddComponent("planardefense")
+        end
+        inst.components.planardefense:SetBaseDefense(planardefense)
+    end
+
+    if self:IsMax("horrorfuel") and self:IsMax("purebrilliance") and not data.horrorfuel_purebrilliance then
+        -- 只能加在角色身上
+        local owner = GetGarnisher(inst)
+        if owner and owner.components.planardamage then
+            owner.components.planardamage:AddBonus(inst, 10)
+        end
+
+        data.horrorfuel_purebrilliance = true
+    end
+
+    if self:IsMax("trunk_winter") and not data.trunk_winter then
+        -- 240保暖
+        UpdateInsulator(inst)
+        data.trunk_winter = true
+    end
+
+    if self:IsMax("tentaclespots") and not data.tentaclespots then
+        -- 100%防水
+        if not inst.components.waterproofer then
+            inst:AddComponent("waterproofer")
+        end
+        data.tentaclespots = true
+    end
+
+    if self:IsMax("walrus_tusk") then
+        -- 25%移速
+        inst.components.equippable.walkspeedmult = 1.25
     end
 end
 
 local function onequip(inst, owner)
     owner.AnimState:OverrideSymbol("swap_body", "furry_collar_bell", "collarbell")
 
-    if inst.components.fueled ~= nil then
-        inst.components.fueled:StartConsuming()
-        if inst.components.fueled.currentfuel <= 0 then
-            return
-        end
+    inst.components.fueled:StartConsuming()
+
+    local self = inst.components.cb_itemupgrade
+
+    if owner.components.combat and self:IsMax("pigskin") then
+        owner.components.combat.externaldamagetakenmultipliers:SetModifier(inst, 0.8)
     end
 
-    if inst._light == nil or not inst._light:IsValid() then
-        inst._light = SpawnPrefab("furry_collar_bell_light")
+    if self:IsMax("horrorfuel") and self:IsMax("purebrilliance") and owner.components.planardamage then
+        owner.components.planardamage:AddBonus(inst, 10)
     end
-    inst._light.entity:SetParent(owner.entity)
 
-    if owner.components.bloomer ~= nil then
-        owner.components.bloomer:PushBloom(inst, "shaders/anim.ksh", 1)
-    else
-        owner.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
-    end
-    owner.components.health.externalabsorbmodifiers:SetModifier("furry_collar_bell", 0.02 * inst.upgrade_data.pigskin)
-    UpdateInsulation(inst)
-end
+    -- 微弱照明
+    inst:WatchWorldState("isday", OnIsDay)
+    OnIsDay(inst, TheWorld.state.isday)
 
-local function turnoff(inst)
-    if inst._light ~= nil then
-        if inst._light:IsValid() then
-            inst._light:Remove()
-        end
-        inst._light = nil
+    if owner.cb_nightvision and self:IsMax("purplegem") then
+        owner.cb_nightvision:set(true)
     end
 end
 
 local function onunequip(inst, owner)
-    if owner.components.bloomer ~= nil then
-        owner.components.bloomer:PopBloom(inst)
-    else
-        owner.AnimState:ClearBloomEffectHandle()
-    end
-
     owner.AnimState:ClearOverrideSymbol("swap_body")
 
-    if inst.components.fueled ~= nil then
-        inst.components.fueled:StopConsuming()
+    inst.components.fueled:StopConsuming()
+
+    if owner.components.combat then
+        owner.components.combat.externaldamagetakenmultipliers:RemoveModifier(inst, 0.8)
     end
 
-    turnoff(inst)
-    owner.components.health.externalabsorbmodifiers:RemoveModifier("furry_collar_bell")
-    UpdateInsulation(inst)
-end
+    owner.components.planardamage:RemoveBonus(inst, 10)
 
-local function onequiptomodel(inst, owner, from_ground)
-    if owner.components.bloomer ~= nil then
-        owner.components.bloomer:PopBloom(inst)
-    else
-        owner.AnimState:ClearBloomEffectHandle()
-    end
+    inst:StopWatchingWorldState("isday", OnIsDay)
+    SetLight(inst, false)
 
-    if inst.components.fueled ~= nil then
-        inst.components.fueled:StopConsuming()
-    end
-
-    turnoff(inst)
-end
-
-local function CLIENT_PlayFuelSound(inst)
-    local parent = inst.entity:GetParent()
-    local container = parent ~= nil and (parent.replica.inventory or parent.replica.container) or nil
-    if container ~= nil and container:IsOpenedBy(ThePlayer) then
-        TheFocalPoint.SoundEmitter:PlaySound("dontstarve/common/nightmareAddFuel")
+    if owner.cb_nightvision then
+        owner.cb_nightvision:set(false)
     end
 end
 
-local function SERVER_PlayFuelSound(inst)
-    local owner = inst.components.inventoryitem.owner
-    if owner == nil then
-        inst.SoundEmitter:PlaySound("dontstarve/common/nightmareAddFuel")
-    elseif inst.components.equippable:IsEquipped() and owner.SoundEmitter ~= nil then
-        owner.SoundEmitter:PlaySound("dontstarve/common/nightmareAddFuel")
-    else
-        inst.playfuelsound:push()
-        --Dedicated server does not need to trigger sfx
-        if not TheNet:IsDedicated() then
-            CLIENT_PlayFuelSound(inst)
-        end
-    end
-end
-
-local function nofuel(inst, data)
-    if inst.components.fueled.currentfuel <= 0 then
-        inst.components.equippable.walkspeedmult = nil
-        if inst.upgrade_data.eyebrellahat == true then
-            inst.components.waterproofer:SetEffectiveness(0)
-            inst.components.insulator:SetInsulation(0)
-        end
-        if inst.upgrade_data.trunkvest_winter == true then
-            inst.components.insulator:SetInsulation(0)
-        end
-        turnoff(inst)
-        if inst.components.equippable:IsEquipped() then
-            local owner = inst.components.inventoryitem.owner
-            if owner.components.bloomer ~= nil then
-                owner.components.bloomer:PopBloom(inst)
-            else
-                owner.AnimState:ClearBloomEffectHandle()
-            end
-            owner.components.health.externalabsorbmodifiers:RemoveModifier("furry_collar_bell")
-        end
-        inst.cb_nofule = true
-    else
-        if data.oldsection > 0 then
-            return
-        end
-        inst.components.equippable.walkspeedmult = inst.upgrade_data.cane == true and 1.45 or 1.2
-        if inst.upgrade_data.eyebrellahat == true then
-            inst.components.waterproofer:SetEffectiveness(TUNING.WATERPROOFNESS_ABSOLUTE)
-            inst.components.insulator:SetInsulation(TUNING.INSULATION_LARGE)
-            UpdateInsulation(inst)
-        end
-        if inst.upgrade_data.trunkvest_winter == true then
-            inst.components.insulator:SetInsulation(TUNING.INSULATION_LARGE)
-            UpdateInsulation(inst)
-        end
-        if inst.components.equippable:IsEquipped() then
-            local owner = inst.components.inventoryitem.owner
-
-            inst.components.fueled:StartConsuming()
-
-            if inst._light == nil or not inst._light:IsValid() then
-                inst._light = SpawnPrefab("furry_collar_bell_light")
-            end
-            inst._light.entity:SetParent(owner.entity)
-
-            if owner.components.bloomer ~= nil then
-                owner.components.bloomer:PushBloom(inst, "shaders/anim.ksh", 1)
-            else
-                owner.AnimState:SetBloomEffectHandle("shaders/anim.ksh")
-            end
-            owner.components.health.externalabsorbmodifiers:SetModifier("furry_collar_bell", 0.02 * inst.upgrade_data.pigskin)
-        end
-        inst.cb_nofule = false
-    end
-end
-
-local function UpgradeCollar(inst, item)
-    if not item then return end
-
-    if item.prefab == "cane" then
-        inst.upgrade_data.cane = true
-        inst.components.equippable.walkspeedmult = 1.45
-        inst.components.talker:Say("移动速度加成提升至1.45！")
-    elseif item.prefab == "eyebrellahat" then
-        inst.upgrade_data.eyebrellahat = true
-        inst.components.insulator:SetInsulation(TUNING.INSULATION_LARGE)
-        UpdateInsulation(inst)
-        inst.components.waterproofer:SetEffectiveness(TUNING.WATERPROOFNESS_ABSOLUTE)
-        inst.components.talker:Say("提供120隔热与100%防水！")
-    elseif item.prefab == "pigskin" then
-        inst.upgrade_data.pigskin = inst.upgrade_data.pigskin + 1
-        inst.components.talker:Say("减伤增加" .. (inst.upgrade_data.pigskin * 2) .. "%！")
-    elseif item.prefab == "trunkvest_winter" then
-        inst.upgrade_data.trunkvest_winter = true
-        inst.components.insulator:SetInsulation(TUNING.INSULATION_LARGE)
-        inst.components.talker:Say("保温提升120点！")
-    end
-
-    -- 消耗给予的物品
-    if item.components.stackable ~= nil and item.components.stackable:IsStack() then
-        item.components.stackable:Get():Remove()
-    else
-        item:Remove()
-    end
-end
-
-local function OnItemGiven(inst, giver, item)
-    UpgradeCollar(inst, item)
-end
-
-local function AddUpgradable(inst)
-    if inst.components.tradable == nil then
-        inst:AddComponent("tradable")
-    end
-
-    if inst.components.trader == nil then
-        inst:AddComponent("trader")
-        inst.components.trader:SetAbleToAcceptTest(function(inst, item)
-            if item.prefab == "cane" and inst.upgrade_data.cane then
-                return false
-            elseif item.prefab == "eyebrellahat" and inst.upgrade_data.eyebrellahat then
-                return false
-            elseif item.prefab == "pigskin" and inst.upgrade_data.pigskin >= 10 then
-                return false
-            elseif item.prefab == "trunkvest_winter" and inst.upgrade_data.trunkvest_winter then
-                return false
-            end
-
-            return item.prefab == "cane" or
-                item.prefab == "eyebrellahat" or
-                item.prefab == "pigskin" or
-                item.prefab == "trunkvest_winter"
-        end)
-        inst.components.trader.onaccept = OnItemGiven
-    end
-end
-
-local function onsave(inst, data)
-    data.cb_nofule = inst.cb_nofule
-    -- 保存升级状态
-    data.cane = inst.upgrade_data.cane
-    data.eyebrellahat = inst.upgrade_data.eyebrellahat
-    data.pigskin = inst.upgrade_data.pigskin
-    data.trunkvest_winter = inst.upgrade_data.trunkvest_winter
-end
-
-local function onpreload(inst, data)
-    if data then
-        if data.cb_nofule then
-            inst.cb_nofule = data.cb_nofule
-        end
-        if data.cane then
-            inst.upgrade_data.cane = data.cane
-        end
-        if data.eyebrellahat then
-            inst.upgrade_data.eyebrellahat = data.eyebrellahat
-        end
-        if data.pigskin then
-            inst.upgrade_data.pigskin = data.pigskin
-        end
-        if data.trunkvest_winter then
-            inst.upgrade_data.trunkvest_winter = data.trunkvest_winter
-        end
-    end
-end
-
-local function OnLoad(inst)
-    if inst.cb_nofule == true then
-        inst.components.equippable.walkspeedmult = nil
-        turnoff(inst)
-    else
-        inst.components.equippable.walkspeedmult = inst.upgrade_data.cane == true and 1.45 or 1.2
-        if inst.upgrade_data.eyebrellahat == true then
-            inst.components.waterproofer:SetEffectiveness(TUNING.WATERPROOFNESS_ABSOLUTE)
-            inst.components.insulator:SetInsulation(TUNING.INSULATION_LARGE)
-            UpdateInsulation(inst)
-        end
-        if inst.upgrade_data.trunkvest_winter == true then
-            inst.components.insulator:SetInsulation(TUNING.INSULATION_LARGE)
-            UpdateInsulation(inst)
+local function OnPercentUsedChange(inst, data)
+    if data and data.percent then
+        if data.percent <= 0 and inst._light then
+            SetLight(inst, false)
+        elseif data.percent > 0 and GetGarnisher(inst) and not inst._light then
+            OnIsDay(inst, TheWorld.state.isday)
         end
     end
 end
@@ -286,107 +210,39 @@ local function fn()
     inst.AnimState:SetBuild("furry_collar_bell")
     inst.AnimState:PlayAnimation("idle")
 
-    --shadowlevel (from shadowlevel component) added to pristine state for optimization
-    inst:AddTag("shadowlevel")
-
-    inst.foleysound = "dontstarve/movement/foley/jewlery"
-
-    inst.playfuelsound = net_event(inst.GUID, "amulet.playfuelsound")
-
-    if not TheWorld.ismastersim then
-        --delayed because we don't want any old events
-        inst:DoTaskInTime(0, inst.ListenForEvent, "amulet.playfuelsound", CLIENT_PlayFuelSound)
-    end
-
     MakeInventoryFloatable(inst, "med", nil, 0.6)
+
+    inst:AddComponent("cb_itemupgrade"):Setup(ITEMS, OnUpgrade)
 
     inst.entity:SetPristine()
 
     if not TheWorld.ismastersim then
         return inst
     end
-
-    inst.cb_nofule = false
-    inst.upgrade_data = {
-        cane = false,
-        eyebrellahat = false,
-        pigskin = 0,
-        trunkvest_winter = false,
-    }
 
     inst:AddComponent("inspectable")
 
     inst:AddComponent("equippable")
     inst.components.equippable.equipslot = EQUIPSLOTS.NECK or EQUIPSLOTS.BODY
-    inst.components.equippable.dapperness = TUNING.DAPPERNESS_SMALL
-    inst.components.equippable.is_magic_dapperness = true
+    inst.components.equippable.dapperness = TUNING.DAPPERNESS_MED
     inst.components.equippable:SetOnEquip(onequip)
     inst.components.equippable:SetOnUnequip(onunequip)
-    inst.components.equippable:SetOnEquipToModel(onequiptomodel)
-    inst.components.equippable.walkspeedmult = 1.2
 
     inst:AddComponent("inventoryitem")
-    inst.components.inventoryitem:SetOnDroppedFn(turnoff)
-
-    inst:AddComponent("shadowlevel")
-    inst.components.shadowlevel:SetDefaultLevel(TUNING.AMULET_SHADOW_LEVEL)
 
     inst:AddComponent("fueled")
     inst.components.fueled.fueltype = FUELTYPE.NIGHTMARE
-    inst.components.fueled:InitializeFuelLevel(960)
+    inst.components.fueled:InitializeFuelLevel(TUNING.TOTAL_DAY_TIME * 3.5)
     inst.components.fueled:SetFirstPeriod(TUNING.TURNON_FUELED_CONSUMPTION, TUNING.TURNON_FULL_FUELED_CONSUMPTION)
     inst.components.fueled.accepting = true
-    inst.components.fueled:SetTakeFuelFn(SERVER_PlayFuelSound)
 
-    inst:AddComponent("talker")
+    inst:WatchWorldState("season", UpdateInsulator)
 
-    inst:AddComponent("insulator")
-
-    inst:AddComponent("waterproofer")
-    inst.components.waterproofer:SetEffectiveness(0)
-
-    -- 添加升级功能
-    AddUpgradable(inst)
-
-    inst:ListenForEvent("onfueldsectionchanged", nofuel)
-
-    inst.OnSave = onsave
-    inst.OnPreLoad = onpreload
-    inst.OnLoad = OnLoad
+    inst:ListenForEvent("percentusedchange", OnPercentUsedChange)
 
     MakeHauntableLaunch(inst)
 
-    inst._light = nil
-    inst.OnRemoveEntity = turnoff
-
-
     return inst
 end
 
-local function lightfn()
-    local inst = CreateEntity()
-
-    inst.entity:AddTransform()
-    inst.entity:AddLight()
-    inst.entity:AddNetwork()
-
-    inst:AddTag("FX")
-
-    inst.Light:SetRadius(2)
-    inst.Light:SetFalloff(.7)
-    inst.Light:SetIntensity(.65)
-    inst.Light:SetColour(223 / 255, 208 / 255, 69 / 255)
-
-    inst.entity:SetPristine()
-
-    if not TheWorld.ismastersim then
-        return inst
-    end
-
-    inst.persists = false
-
-    return inst
-end
-
-return Prefab("furry_collar_bell", fn, assets, { "furry_collar_bell_light" }),
-    Prefab("furry_collar_bell_light", lightfn)
+return Prefab("furry_collar_bell", fn, assets)

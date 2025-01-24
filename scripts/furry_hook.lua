@@ -122,7 +122,7 @@ for _, prefab_name in ipairs(target_items) do
 end
 
 --================================================================================================================
---[[hook移除组件，甜腻蔬菜汤buff快速搬运重物 ]]
+--[[ hook移除组件，甜腻蔬菜汤buff快速搬运重物 ]]
 --================================================================================================================
 AddComponentPostInit("locomotor", function(self)
     local oldGetSpeedMultiplier = self.GetSpeedMultiplier
