@@ -1,3 +1,16 @@
+-- 人物
+STRINGS.CHARACTER_TITLES.furry_yellowcat = "绒绒" -- 标题
+STRINGS.CHARACTER_NAMES.furry_yellowcat = "绒绒" -- 名字
+STRINGS.CHARACTER_DESCRIPTIONS.furry_yellowcat = "*喜欢烹饪\n*喜欢料理\n*喜欢朋友" -- 描述
+STRINGS.CHARACTER_QUOTES.furry_yellowcat = "\"会产奶的Furry\"" -- 特点
+
+STRINGS.CHARACTERS.ZSKB_ZOMBIE = require "speech_wilson" -- 人物语言文件,可以进去自定义
+
+STRINGS.NAMES.ZSKB_ZOMBIE = "绒绒" -- 人物在游戏里面的名字
+STRINGS.SKIN_NAMES.furry_yellowcat_none = "僵尸" -- 检查界面显示的名字
+
+STRINGS.CHARACTER_SURVIVABILITY.furry_yellowcat = "可爱即是正义" -- 生存几率
+
 -- 料理
 STRINGS.NAMES.FURRY_CURRY_OMELET_RICE = "咖喱蛋包饭" -- 名称
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRY_CURRY_OMELET_RICE = "用料充实看起来就非常好吃" -- 按alt检查时人物说的话

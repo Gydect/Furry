@@ -20,6 +20,8 @@ PrefabFiles = {
     "buff_furry_jasmine_milk_tea", -- 茉莉奶绿buff(临时)
     "furry_butter",                -- 劣质黄油
     "furry_book_web_ground",       -- 克服蛛形纲恐惧症地面特效x2倍大小
+    "furry_yellowcat",             -- 绒绒
+    "furry_yellowcat_none",        -- 人物皮肤
 }
 
 Assets = {
@@ -32,12 +34,55 @@ Assets = {
 
     Asset("ATLAS", "images/furry_cookbookimages.xml"), -- 烹饪指南本mod料理的256贴图集
     Asset("IMAGE", "images/furry_cookbookimages.tex"),
+
+    Asset("IMAGE", "bigportraits/furry_yellowcat.tex"), -- 人物立绘
+    Asset("ATLAS", "bigportraits/furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/saveslot_portraits/furry_yellowcat.tex"), -- 存档图片
+    Asset("ATLAS", "images/saveslot_portraits/furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/avatars/avatar_furry_yellowcat.tex"), -- tab键人物列表显示的头像
+    Asset("ATLAS", "images/avatars/avatar_furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/avatars/avatar_ghost_furry_yellowcat.tex"), --tab键人物列表显示的头像(幽灵)
+    Asset("ATLAS", "images/avatars/avatar_ghost_furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/avatars/self_inspect_furry_yellowcat.tex"), -- 人物物品栏右侧检查图像
+    Asset("ATLAS", "images/avatars/self_inspect_furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/selectscreen_portraits/furry_yellowcat.tex"), -- 选人界面
+    Asset("ATLAS", "images/selectscreen_portraits/furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/selectscreen_portraits/furry_yellowcat_silho.tex"), -- 选人界面(未解锁)
+    Asset("ATLAS", "images/selectscreen_portraits/furry_yellowcat_silho.xml"),
+
+    Asset("IMAGE", "images/map_icons/furry_yellowcat.tex"), -- 小地图图标
+    Asset("ATLAS", "images/map_icons/furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/names_furry_yellowcat.tex"), -- 人物名字(灰色)
+    Asset("ATLAS", "images/names_furry_yellowcat.xml"),
+
+    Asset("IMAGE", "images/names_gold_furry_yellowcat.tex"), -- 人物名字(金色)
+    Asset("ATLAS", "images/names_gold_furry_yellowcat.xml"),
 }
 
 modimport("scripts/furry_linkmod.lua") -- 判定别的mod是否开启
 
+local skin_modes = {
+    {
+        type = "ghost_skin",
+        anim_bank = "ghost",
+        idle_anim = "idle",
+        scale = 0.75,
+        offset = { 0, -25 }
+    },
+}
+-- 增加人物到mod人物列表 性别为男性(MALE, FEMALE, ROBOT, NEUTRAL, and PLURAL)
+AddModCharacter("furry_yellowcat", "MALE", skin_modes)
+
 -- 注册小地图图标
 AddMinimapAtlas("images/furry_inventoryimages.xml")
+AddMinimapAtlas("images/map_icons/furry_yellowcat.xml")
 
 -- 设置语言
 if TUNING.FURRY_LANGUAGE == "Chinese" then
@@ -51,6 +96,7 @@ end
 -- 注册贴图
 modimport("scripts/furry_tool.lua")
 FURRY_TOOL.Tool_RegisterInventoryItemAtlas("images/furry_inventoryimages.xml")
+FURRY_TOOL.Tool_RegisterInventoryItemAtlas("images/map_icons/furry_yellowcat.xml")
 
 modimport("scripts/furry_cooking.lua")  -- 烹饪
 modimport("scripts/furry_hook.lua")     -- 钩子

@@ -1,3 +1,16 @@
+-- Character
+STRINGS.CHARACTER_TITLES.furry_yellowcat = "Furry Yellowcat" -- Title
+STRINGS.CHARACTER_NAMES.furry_yellowcat = "Furry Yellowcat" -- Name
+STRINGS.CHARACTER_DESCRIPTIONS.furry_yellowcat = "*Can produce wolf milk\n*Likes being milked by males\n*Can make low-quality butter" -- Description
+STRINGS.CHARACTER_QUOTES.furry_yellowcat = "\"A Furry that produces milk\"" -- Quote
+
+STRINGS.CHARACTERS.ZSKB_ZOMBIE = require "speech_wilson" -- Character speech file, can be customized inside
+
+STRINGS.NAMES.ZSKB_ZOMBIE = "Furry Yellowcat" -- The character's name displayed in the game
+STRINGS.SKIN_NAMES.furry_yellowcat_none = "Zombie" -- Name displayed in the inspection interface
+
+STRINGS.CHARACTER_SURVIVABILITY.furry_yellowcat = "Cuteness is justice" -- Survival chance
+
 -- foods
 STRINGS.NAMES.FURRY_CURRY_OMELET_RICE = "Curry Omelet Rice"                                                            -- Name
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRY_CURRY_OMELET_RICE = "Packed with ingredients, it looks absolutely delicious" -- Character's comment when inspecting with alt
