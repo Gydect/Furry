@@ -74,6 +74,8 @@ local master_postinit = function(inst)
     -- Hunger rate (optional)
     inst.components.hunger.hungerrate = 1 * TUNING.WILSON_HUNGER_RATE
 
+    inst:AddComponent("furry_milking")
+
     inst.OnLoad = onload
     inst.OnNewSpawn = onload
 end

@@ -56,6 +56,46 @@ AddComponentAction("USEITEM", "inventoryitem", function(inst, doer, target, acti
     end
 end)
 
+local furry_actions = {
+    {
+        --挤奶
+        id = "FURRY_MILKING",
+        str = "挤奶",
+        fn = function(act)
+            local target = act.target
+            local doer = act.doer
+            return target and target.components.furry_milking and target.components.furry_milking:MakeMilk(doer)
+        end,
+        state = "domediumaction",
+    },
+}
+
+local component_actions = {
+    SCENE = {
+        furry_milking = function(inst, doer, actions, right)
+            if right and (inst == doer or table.contains(CHARACTER_GENDERS["MALE"], doer.prefab)) then
+                table.insert(actions, ACTIONS.FURRY_MILKING)
+            end
+        end
+    }
+}
+
+for _, v in pairs(furry_actions) do
+    local action = AddAction(v.id, v.str, v.fn)
+    if v.actiondata then
+        for k, data in pairs(v.actiondata) do
+            action[k] = data
+        end
+    end
+    AddStategraphActionHandler("wilson", ActionHandler(action, v.state))
+    AddStategraphActionHandler("wilson_client", ActionHandler(action, v.state))
+end
+
+for k, v in pairs(component_actions) do
+    for cmp, fn in pairs(v) do
+        AddComponentAction(k, cmp, fn)
+    end
+end
 --=======================================
 --[[ 代码作者:恒子 源:能力勋章mod ]]
 --=======================================
