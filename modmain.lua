@@ -98,6 +98,7 @@ modimport("scripts/furry_tool.lua")
 FURRY_TOOL.Tool_RegisterInventoryItemAtlas("images/furry_inventoryimages.xml")
 FURRY_TOOL.Tool_RegisterInventoryItemAtlas("images/map_icons/furry_yellowcat.xml")
 
+modimport("scripts/furry_recipes.lua")  -- 制作配方
 modimport("scripts/furry_cooking.lua")  -- 烹饪
 modimport("scripts/furry_hook.lua")     -- 钩子
 modimport("scripts/furry_actions.lua")  -- 动作
