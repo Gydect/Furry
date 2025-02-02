@@ -1,1 +1,9 @@
-<Atlas><Texture filename="modicon.tex" /><Elements><Element name="modicon.tex" u1="0.001953125" u2="0.998046875" v1="0.001953125" v2="0.998046875" /></Elements></Atlas>
+<?xml version="1.0" encoding="UTF-8"?>
+<Atlas>
+    <Texture filename="modicon.tex"/>
+    <Elements>
+        <Element name="modicon.tex" u1="0.00195313" u2="0.998047" v1="0.00195313" v2="0.998047"/>
+    </Elements>
+    <StraightAlpha>false</StraightAlpha>
+</Atlas>
+
