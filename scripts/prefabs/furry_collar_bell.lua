@@ -72,7 +72,6 @@ local function OnIsDay(inst, isday)
     local enable = not isday
         and owner
         and inst.components.cb_itemupgrade:IsMax("lightbulb")
-        and not inst.components.fueled:IsEmpty()
     SetLight(inst, enable)
 end
 
@@ -146,8 +145,6 @@ end
 local function onequip(inst, owner)
     owner.AnimState:OverrideSymbol("swap_body", "furry_collar_bell", "collarbell")
 
-    inst.components.fueled:StartConsuming()
-
     local self = inst.components.cb_itemupgrade
 
     if owner.components.combat and self:IsMax("pigskin") then
@@ -169,8 +166,6 @@ end
 
 local function onunequip(inst, owner)
     owner.AnimState:ClearOverrideSymbol("swap_body")
-
-    inst.components.fueled:StopConsuming()
 
     if owner.components.combat then
         owner.components.combat.externaldamagetakenmultipliers:RemoveModifier(inst, 0.8)
@@ -229,12 +224,6 @@ local function fn()
     inst.components.equippable:SetOnUnequip(onunequip)
 
     inst:AddComponent("inventoryitem")
-
-    inst:AddComponent("fueled")
-    inst.components.fueled.fueltype = FUELTYPE.NIGHTMARE
-    inst.components.fueled:InitializeFuelLevel(TUNING.TOTAL_DAY_TIME * 3.5)
-    inst.components.fueled:SetFirstPeriod(TUNING.TURNON_FUELED_CONSUMPTION, TUNING.TURNON_FULL_FUELED_CONSUMPTION)
-    inst.components.fueled.accepting = true
 
     inst:WatchWorldState("season", UpdateInsulator)
 

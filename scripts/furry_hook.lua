@@ -487,3 +487,22 @@ if actions_status then
         end
     end
 end
+
+--================================================================================================================
+--[[ 修改植物人的 onfertlizedfn 函数,使其在使用营养杯之后,添加上本mod的buff ]]
+--================================================================================================================
+AddPrefabPostInit("wormwood", function(inst)
+    if not TheWorld.ismastersim then
+        return
+    end
+
+    local old_onfertlizedfn = inst.components.fertilizable.onfertlizedfn
+    local function new_OnFertilized(inst, fertilizer_obj)
+        if fertilizer_obj.prefab == "furry_nutrition_cup" then
+            inst:AddDebuff("buff_furry_nutrition_cup", "buff_furry_nutrition_cup")
+        end
+        local success = old_onfertlizedfn(inst, fertilizer_obj)
+        return success
+    end
+    inst.components.fertilizable.onfertlizedfn = new_OnFertilized
+end)

@@ -3,14 +3,6 @@
 	decoration-装饰度-蝴蝶翅膀, fat-油脂度-黄油, dairy-奶度, inedible-不可食用度, seed-种子-桦栗果, magic-魔法度-噩梦燃料
     ]]
 
--- 计算食物和烹饪食物的数量,函数是可以的,就是智能锅无法预测
-local function Cooked(names, name)
-    local num1 = names[name] or 0
-    local num2 = names[name .. "_cooked"] or 0
-    local num = num1 + num2
-    return num > 0 and num
-end
-
 local foods = {
     -- 紫苏包肉
     furry_perilla_wraps = {
@@ -363,34 +355,6 @@ local foods = {
             end
         end
     },
-    -- 营养杯
-    furry_nutrition_cup = {
-        test = function(cooker, names, tags)
-            return names.glommerfuel and names.furry_wolf_milk and names.poop == 2
-        end,
-        priority = 20,
-        weight = 1,
-        foodtype = TUNING_FURRY.NUTRITION_CUP.FOODTYPE,
-        health = TUNING_FURRY.NUTRITION_CUP.HEALTH,
-        hunger = TUNING_FURRY.NUTRITION_CUP.HUNGER,
-        perishtime = TUNING_FURRY.NUTRITION_CUP.PERISH,
-        sanity = TUNING_FURRY.NUTRITION_CUP.SANITY,
-        cooktime = TUNING_FURRY.NUTRITION_CUP.COOKTIME,
-        floater = { "med", nil, 0.55 },
-        card_def = { ingredients = { { "glommerfuel", 1 }, { "furry_wolf_milk", 1 }, { "poop", 2 } } },
-        oneatenfn = function(inst, eater)
-            if eater and eater.prefab == "wormwood" then
-                if eater.components.bloomness then
-                    --设置3级开花
-                    eater.components.bloomness:SetLevel(3)
-                    --设置1000点开花值
-                    eater.components.bloomness:Fertilize(1000)
-                end
-                --缓慢回血30buff
-                eater:AddDebuff("buff_furry_nutrition_cup", "buff_furry_nutrition_cup")
-            end
-        end
-    },
     -- 红石榴丝绒千层
     furry_pomegranate_velvet = {
         test = function(cooker, names, tags)
@@ -503,7 +467,7 @@ local foods = {
     furry_french_boston_lobster = {
         test = function(cooker, names, tags)
             return (names.wobster_sheller_land or names.wobster_sheller_dead) and names.furry_wolf_milk == 2
-                and (names.garlic == 2 or names.garlic_cooked == 2 or (names.garlic and names.garlic_cooked))
+                and (names.garlic or names.garlic_cooked)
         end,
         priority = 20,
         weight = 1,

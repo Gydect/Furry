@@ -8,7 +8,7 @@ description = [[
 -- 作者
 author = "Gyde(码) & 王筱巫(画)"
 -- 版本
-version = "1.0.0"
+version = "1.0.0.1"
 -- klei官方论坛地址，为空则默认是工坊的地址
 forumthread = ""
 -- modicon

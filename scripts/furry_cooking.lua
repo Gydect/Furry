@@ -27,7 +27,10 @@ for k, recipe in pairs(spicedfoods) do
     end
 end
 
-AddIngredientValues({ "foliage" }, { inedible = 1 })            -- 蕨叶可以入锅
-AddIngredientValues({ "furry_wolf_milk" }, { dairy = 1 })       -- 狼奶
-AddIngredientValues({ "furry_butter" }, { fat = 1, dairy = 1 }) -- 劣质黄油
-AddIngredientValues({ "poop" }, { inedible = 1 })               -- 粪肥
+-- 添加为可以入锅的食材
+AddIngredientValues({ "foliage" }, { inedible = 1 })                        -- 蕨叶可以入锅
+AddIngredientValues({ "furry_wolf_milk" }, { dairy = 1 })                   -- 狼奶
+AddIngredientValues({ "furry_butter" }, { fat = 1, dairy = 1 })             -- 劣质黄油
+AddIngredientValues({ "poop" }, { inedible = 1 })                           -- 粪肥
+AddIngredientValues({ "glommerfuel" }, { inedible = 1 })                    -- 格罗姆的黏液
+AddIngredientValues({ "wobster_sheller_dead" }, { meat = 1.0, fish = 1.0 }) -- 死龙虾

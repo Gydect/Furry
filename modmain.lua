@@ -19,6 +19,7 @@ PrefabFiles = {
     "buff_furry_tiramisu",         -- 提拉米苏buff(临时)
     "buff_furry_jasmine_milk_tea", -- 茉莉奶绿buff(临时)
     "furry_butter",                -- 劣质黄油
+    "furry_nutrition_cup",         -- 营养杯
     "furry_book_web_ground",       -- 克服蛛形纲恐惧症地面特效x2倍大小
     "furry_yellowcat",             -- 绒绒
     "furry_yellowcat_none",        -- 人物皮肤

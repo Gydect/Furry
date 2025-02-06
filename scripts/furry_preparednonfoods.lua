@@ -1,5 +1,6 @@
 local items =
 {
+    -- 劣质黄油
     furry_butter =
     {
         test = function(cooker, names, tags)
@@ -15,6 +16,23 @@ local items =
         health = TUNING_FURRY.BUTTER.HEALTH,
         hunger = TUNING_FURRY.BUTTER.HUNGER,
         sanity = TUNING_FURRY.BUTTER.SANITY,
+    },
+    -- 营养杯
+    furry_nutrition_cup =
+    {
+        test = function(cooker, names, tags)
+            return names.glommerfuel and names.furry_wolf_milk and names.poop == 2
+        end,
+        priority = 20,
+        cooktime = TUNING_FURRY.NUTRITION_CUP.COOKTIME,
+        perishtime = TUNING_FURRY.NUTRITION_CUP.PERISH,
+        floater = { "med", nil, 0.55 },
+        overridebuild = "furry_foods",
+        overridesymbolname = "furry_nutrition_cup",
+
+        health = TUNING_FURRY.NUTRITION_CUP.HEALTH,
+        hunger = TUNING_FURRY.NUTRITION_CUP.HUNGER,
+        sanity = TUNING_FURRY.NUTRITION_CUP.SANITY,
     },
 }
 
