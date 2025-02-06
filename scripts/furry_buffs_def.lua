@@ -42,7 +42,7 @@ local function herbal_tea_read(wicker, data)
     if data.success == true then
         if book.prefab == "book_tentacles" or book.prefab == "book_birds" or book.prefab == "book_bees"
             or book.prefab == "book_horticulture" or book.prefab == "book_horticulture_upgraded"
-            or book.prefab == "book_brimstone" then
+            or book.prefab == "book_brimstone" or book.prefab == "book_fish" then
             if book.components.book.onread ~= nil then
                 book.components.book.onread(book, wicker)
             end
